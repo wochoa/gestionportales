@@ -1,0 +1,43 @@
+<?php
+
+namespace App\Http\Controllers;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class Visitas extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function __construct() {
+		//$this->middleware('auth')->only('create','store');// aqui protegemos solo create y store
+		//$this->middleware('auth')->except('index'); // aqui protegemos a todos excepto las
+        $this->middleware('auth');
+	}
+
+    public function index()
+    {
+        
+        
+
+        return view('regvisita');
+        // return $dirweb[0]->iddependencia;
+    }
+
+    public function reniec($id)
+    {
+        $url='https://app.regionhuanuco.gob.pe/soap_pruebas/reniec.php?cdni='.$id;
+
+        $wsdl = file_get_contents($url);
+        return $wsdl;
+    }
+
+    public function reportevisit()
+    {
+        $regvisita=DB::connection('mysql')->table('regvisita')->orderBy('idregvisita','DESC')->paginate(10);
+        return view('reportevisit',compact('regvisita'));
+    }
+}
