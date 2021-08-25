@@ -125,7 +125,7 @@ $act_sgd=substr($enlcae,0,3);//sgd
   @else
       <li class="nav-item dropdown">
           <a class="nav-link" href="#" role="button" data-toggle="dropdown" v-pre>
-              {{ Auth::user()->adm_name }} <i class="far fa-user"></i>
+               <i class="far fa-user"></i>
           </a>
 
           <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" aria-labelledby="navbarDropdown">
@@ -135,12 +135,12 @@ $act_sgd=substr($enlcae,0,3);//sgd
               <img src="{{ asset(Storage::url(Auth::user()->avatar)) }}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
               <div class="media-body">
                 <h3 class="dropdown-item-title">
-                  {{ Auth::user()->name }}
+                  {{ Auth::user()->adm_name }} {{ Auth::user()->adm_lastname }}
                   <span class="float-right text-sm text-success"><i class="fas fa-star"></i></span>
                 </h3>
-                <p class="text-sm">{{ Auth::user()->adm_email }}</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i>Unidad Ejecutora:  {{ Auth::user()->unidad_ejecutora }}</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i>Direccion web:  {{ Auth::user()->iddirecciones_web }}</p>
+                <p class="text-sm">Usuarios:{{ Auth::user()->adm_email }}</p>
+                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i>Email:  {{ Auth::user()->adm_correo }}</p>
+                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i>Celular:  {{ Auth::user()->adm_telefono }}</p>
                 
               </div>
             </div>
