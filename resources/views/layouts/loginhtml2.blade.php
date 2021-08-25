@@ -43,9 +43,11 @@
 <!-- BEGIN: Body-->
 
 <body class="vertical-layout vertical-menu-modern blank-page navbar-floating footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="blank-page" 
-style="background: #2d1f54 url('dist/img/fondo2.jpg') no-repeat left 100% !important; 
-nmin-height:100%;
-background-size:cover;
+style="background: #2d1f54 url('dist/img/fondo2.jpg') no-repeat center center fixed;
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-size: cover;
 ">
     <!-- BEGIN: Content-->
     <div class="app-content content ">
