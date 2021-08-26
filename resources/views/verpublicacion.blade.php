@@ -33,7 +33,7 @@
           @php
           //print_r($dato);
           @endphp
-          <h4>{{ utf8_encode($dato[0]->titulo) }}</h4>
+          <h4>{!! $dato[0]->titulo !!}</h4>
           <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
               @if($dato[0]->img1)
@@ -74,7 +74,7 @@
           </div>
 
           <div class="row">
-            {!! utf8_encode($dato[0]->contenido) !!}
+            {!! $dato[0]->contenido !!}
           </div>
         </div>
         

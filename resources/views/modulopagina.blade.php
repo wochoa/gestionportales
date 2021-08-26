@@ -44,7 +44,7 @@
 							@endforeach --}}
 							@forelse($datospag as $not)
 							<tr>
-								<td nowrap>{{ $not->id_pagina }}</td><td>{{ utf8_encode($not->nom_pagina) }}</td><td nowrap>{{ $not->fecha_pag }}</td><td nowrap>
+								<td nowrap>{{ $not->id_pagina }}</td><td>{!! $not->nom_pagina !!}</td><td nowrap>{{ $not->fecha_pag }}</td><td nowrap>
 									<a href="verpagina/{{ $not->id_pagina }}" title="ver pagina" class="btn btn-default btn-sm"><i class="fa fa-eye"></i></a> 
 									@can('gp_pagina_editar')<a href="editarpag/{{ $not->id_pagina }}" title="Editar pagina" class="btn btn-default btn-sm"><i class="fa fa-pen"></i></a>@endcan
 									@can('gp_pagina_eliminar')<a href="eliminarpag/{{ $not->id_pagina }}" title="Eliminar pagina" class="btn btn-default btn-sm"><i class="fa fa-trash"></i></a>@endcan
