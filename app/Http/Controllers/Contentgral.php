@@ -485,11 +485,11 @@ class Contentgral extends Controller {
 	public function popup()
 	{	// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
 		$iduser=Auth::user()->id;
-		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->get();
-		$idweb = $accesoweb[0]->iddirecciones_web;
+		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
+		$idweb = $accesoweb;//$accesoweb[0]->iddirecciones_web;
 
-		$dato=DB::connection('mysql')->table('popup')->where('iddirecciones_web',$idweb)->get();
-		return view('popup',compact('dato'));
+		$datopop=DB::connection('mysql')->table('popup')->where('iddirecciones_web',$idweb)->orderBy('idpopup','DESC')->paginate(10);
+		return view('popup',compact('datopop'));
 	}
 	public function addrregpopup(Request $request)
 	{
@@ -559,10 +559,10 @@ class Contentgral extends Controller {
 	{
 		// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
 		$iduser=Auth::user()->id;
-		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->get();
-		$idweb = $accesoweb[0]->iddirecciones_web;
+		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
+		$idweb = $accesoweb;//$accesoweb[0]->iddirecciones_web;
 
-		$dato=DB::connection('mysql')->table('secciones')->where('iddirecciones_web',$idweb)->orderBy('seccion_pag','asc')->get();
+		$dato=DB::connection('mysql')->table('secciones')->where('iddirecciones_web',$idweb)->orderBy('seccion_pag','asc')->paginate(10);
 		return view('seccion',compact('dato'));
 	}
 	public function addregseccion(Request $request)

@@ -41,7 +41,7 @@
 						<tbody>
 							@foreach($datosnot as $not)
 							<tr>
-								<td>{{ $not->idnoticias }}</td><td>{!! $not->titulo !!}</td><td nowrap>{{ $not->fechapubli }}</td><td>
+								<td>{{ $not->idnoticias }}</td><td>{!! utf8_encode($not->titulo) !!}</td><td nowrap>{{ $not->fechapubli }}</td><td>
 									<td>  
 										@if($not->activo==1)
 											<a href="/desactivapubli/{{ $not->idnoticias  }}"><i class="fa fa-toggle-on"></i></a>

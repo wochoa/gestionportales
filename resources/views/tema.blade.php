@@ -215,18 +215,18 @@
                 
                     <div class="form-group">
                         <label for="exampleInputEmail1">footer direccion</label>
-                        <textarea name="foote_1"  cols="30" rows="3" class="form-control">{{ $datos[0]->footer_f1 }}</textarea></div>
+                        <textarea name="foote_1"  cols="30" rows="3" class="form-control">{{ utf8_encode($datos[0]->footer_f1) }}</textarea></div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">footer reclamaciones</label>
-                        <textarea name="foote_2" cols="30" rows="3" class="form-control">{{ $datos[0]->footer_f2 }}</textarea>
+                        <textarea name="foote_2" cols="30" rows="3" class="form-control">{{ utf8_encode($datos[0]->footer_f2) }}</textarea>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">footer denuncias</label>
-                        <textarea name="foote_3"  cols="30" rows="3" class="form-control">{{ $datos[0]->footer_f3 }}</textarea>
+                        <textarea name="foote_3"  cols="30" rows="3" class="form-control">{{ utf8_encode($datos[0]->footer_f3) }}</textarea>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">footer Redes sociales</label>
-                        <textarea name="foote_4"  cols="30" rows="3" class="form-control">{{ $datos[0]->redes_sociales }}</textarea>
+                        <textarea name="foote_4"  cols="30" rows="3" class="form-control">{{ utf8_encode($datos[0]->redes_sociales) }}</textarea>
                     </div>
 
                     <div class="form-group">

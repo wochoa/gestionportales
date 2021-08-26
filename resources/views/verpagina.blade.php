@@ -33,11 +33,11 @@
           @php
           //print_r($dato);
           @endphp
-          <h4>{{ $dato[0]->nom_pagina }}</h4>
+          <h4>{{ utf8_encode($dato[0]->nom_pagina) }}</h4>
           
 
           <div class="row">
-            {!! html_entity_decode($dato[0]->cont_pagina) !!}
+            {!! html_entity_decode(utf8_encode($dato[0]->cont_pagina)) !!}
           </div>
         </div>
         

@@ -83,7 +83,7 @@
 					 	</thead>
 					 	<tbody>
 					 		@foreach($datossubmenu as $datsubmenu)
-					 		<tr><td>{{ $datsubmenu->idsubmenu }}</td><td>{!! $datsubmenu->nom_submenu !!}</td><td>{{ $datsubmenu->idmenus }}</td><td>
+					 		<tr><td>{{ $datsubmenu->idsubmenu }}</td><td>{!! utf8_encode($datsubmenu->nom_submenu) !!}</td><td>{{ $datsubmenu->idmenus }}</td><td>
 								 @if($datsubmenu->activo_submenu==1)
 										<a href="/desactivarmpsub/{{ $datsubmenu->idsubmenu }}"><i class="fa fa-toggle-on"></i></a>
 										@else

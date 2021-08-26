@@ -135,7 +135,7 @@
                         
                     </div>
                     <div class="card-footer clearfix">
-                    {{-- {{ $datos->links() }} --}}
+                    {{ $dato->links() }}
                 </div>
                 </div>
                 

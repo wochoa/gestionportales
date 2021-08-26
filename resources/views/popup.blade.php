@@ -70,13 +70,13 @@
                         @endphp --}}
                         
                         
-                        <table class="table table-bordered table-sm table-hover ">
+                        <table class="table table-bordered table-sm table-hover table-responsive">
                             <thead class="bg-secondary">
                                 <tr><th>Id</th><th>Titulo</th><th>Enlace</th><th>Fecha creacion</th><th>Acciones</th></tr>
                             </thead>
                             <tbody>
-                                @foreach($dato as $pop)
-                                <tr><td>{{ $pop->idpopup }}</td><td>{{ $pop->titulopopup }}</td><td>{{ $pop->enlace_popup }}</td><td>{{ $pop->created_at }}</td><td>
+                                @foreach($datopop as $pop)
+                                <tr><td>{{ $pop->idpopup }}</td><td>{{ $pop->titulopopup }}</td><td width='10%'>{{ $pop->enlace_popup }}</td><td>{{ $pop->created_at }}</td><td>
                                 @if($pop->activogral==1)
                                     <a href="/desactivapopup/{{ $pop->idpopup }}"><i class="fa fa-toggle-on"></i></a>
                                     @else
@@ -92,7 +92,7 @@
                         
                     </div>
                     <div class="card-footer clearfix">
-                    {{-- {{ $datos->links() }} --}}
+                    {{ $datopop->links() }}
                 </div>
                 </div>
             </div> 

@@ -42,14 +42,14 @@
 					<div class="form-group row">
 	                    <label for="inputEmail3" class="col-sm-2 col-form-label">Título</label>
 	                    <div class="col-sm-10">
-	                      <input type="text" class="form-control" name="publicacion" placeholder="Ingrese el título de su publicación" value="{{ $dato[0]->nom_pagina }}" required>
+	                      <input type="text" class="form-control" name="publicacion" placeholder="Ingrese el título de su publicación" value="{{ utf8_encode($dato[0]->nom_pagina )}}" required>
 	                    </div>
 	                 </div>
 	                 
 	                 <div class="form-group row">
 	                 	<label class="col-sm-6 col-form-label">Contenido de publicación</label>
 	                 	<div class="col-sm-12">
-		                	<textarea class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" required name="contenido">{{ $dato[0]->cont_pagina }}</textarea>
+		                	<textarea class="textarea" placeholder="Place some text here" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" required name="contenido">{{ utf8_encode($dato[0]->cont_pagina) }}</textarea>
 		                </div>
 					 </div>
 
