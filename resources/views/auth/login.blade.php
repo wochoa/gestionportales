@@ -18,7 +18,7 @@
           <!-- Login-->
           <div class="d-flex col-lg-4 align-items-center auth-bg px-2 p-lg-5">
               <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
-                  <h2 class="card-title font-weight-bold mb-1 text-white">Bienvenido a GoreDigital! 👋</h2>
+                  <h2 class="card-title font-weight-bold mb-1 text-white">Ingrese con el usuario de SGD y su clave</h2>
                   <p class="card-text mb-2">Iniciar sesión</p>
                   <form class="form mt-2" method="POST" action="{{ route('login') }}">
                     @csrf
