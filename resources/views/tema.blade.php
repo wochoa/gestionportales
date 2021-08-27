@@ -2,7 +2,9 @@
 @section('titulopagina')
 	Portalweb | tema
 @endsection
-
+@section('css')
+<link rel="stylesheet" href="{{ asset('plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+@endsection
 @section('titulosuperior')
 <div class="col-sm-6">
     <h1>
