@@ -39,9 +39,10 @@ class Visitas extends Controller
     {
         $iduser=Auth::user()->id;
 		$idweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
+        $dnweb=DB::connection('mysql')->table('direcciones_web')->where('iddirecciones_web',$idweb)->value('dns_direcciones_web');
 		//$idweb = $accesoweb[0]->iddirecciones_web;
 
         $regvisita=DB::connection('mysql')->table('regvisita')->where('iddirecciones_web',$idweb)->orderBy('idregvisita','DESC')->paginate(10);
-        return view('reportevisit',compact('regvisita'));
+        return view('reportevisit',compact('regvisita','dnweb'));
     }
 }

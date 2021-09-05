@@ -6,7 +6,7 @@
 <div class="col-sm-6">
     <h1>
       Reporte de visitas
-      <small></small>
+      <small>(Enlace para compartir: <span>{{ $dnweb }}/visitas</span> )</small>
     </h1>
   </div>
   <div class="col-sm-6">

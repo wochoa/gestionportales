@@ -34,15 +34,15 @@ class Visitas extends Component
     {
         // consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
 		$iduser=Auth::user()->id;
-		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->get();
-		$idpaginaweb = $accesoweb[0]->iddirecciones_web;// sacamos la id de la direccion web en este caso 11= Gobierno regional Huanuco
+		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
+		$idpaginaweb = $accesoweb;//$accesoweb[0]->iddirecciones_web;// sacamos la id de la direccion web en este caso 11= Gobierno regional Huanuco
         $this->idweb=$idpaginaweb;
 
-        $dirweb=DB::connection('mysql')->table('direcciones_web')->where('iddirecciones_web',$idpaginaweb)->get();// consultamos para sacar la id de dependencia
+        $iddepen=DB::connection('mysql')->table('direcciones_web')->where('iddirecciones_web',$idpaginaweb)->value('iddependencia');// consultamos para sacar la id de dependencia
 
-        $unidadorganica=DB::table('dependencia')->where('depe_depende',$dirweb[0]->iddependencia)->orderBy('iddependencia','ASC')->get();
+        $unidadorganica=DB::table('dependencia')->where('depe_depende',$iddepen)->orderBy('iddependencia','ASC')->get();
 
-        $regvisita=DB::connection('mysql')->table('regvisita')->where('estado',1)->paginate(10);
+        $regvisita=DB::connection('mysql')->table('regvisita')->where(['estado'=>1,'iddirecciones_web'=>$idpaginaweb])->paginate(10);
 
         return view('livewire.visitas', compact('unidadorganica','regvisita'));
     }

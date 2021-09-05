@@ -152,7 +152,7 @@
   <div class="modal fade" id="editema" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop='static'>
 	<div class="modal-dialog modal-xl">
 	  <div class="modal-content">
-		<form action="{{ route('formedittema') }}" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+		<form action="{{ route('formedittema') }}" method="post"  enctype="multipart/form-data">{{-- accept-charset="UTF-8" --}}
 		<div class="modal-header">
 		  <h5 class="modal-title" id="exampleModalLabel">Editar tema</h5>
 		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
