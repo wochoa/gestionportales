@@ -76,7 +76,7 @@
                             </thead>
                             <tbody>
                                 @foreach($datopop as $pop)
-                                <tr><td>{{ $pop->idpopup }}</td><td>{{ $pop->titulopopup }}</td><td width='10%'>{{ $pop->enlace_popup }}</td><td>{{ $pop->created_at }}</td><td>
+                                <tr><td>{{ $pop->idpopup }}</td><td>{{ $pop->titulopopup }}</td><td width='10%'>{{ $pop->enlace_popup }}</td><td>{{ $pop->created_at }}</td><td nowrap>
                                 @if($pop->activogral==1)
                                     <a href="/desactivapopup/{{ $pop->idpopup }}"><i class="fa fa-toggle-on"></i></a>
                                     @else

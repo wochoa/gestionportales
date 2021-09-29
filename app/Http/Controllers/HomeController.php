@@ -30,6 +30,9 @@ class HomeController extends Controller
          // paginas web creadas
          $iduser=auth()->user()->id;
 
+         $idpaginaweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
+         $nombreportalweb=DB::connection('mysql')->table('direcciones_web')->where('iddirecciones_web',$idpaginaweb)->value('nom_direcciones_web');
+		
          
          $dirweb = DB::connection('mysql')->table('direcciones_web')->where('dns_direcciones_web','!=',null)->OrderBy('iddirecciones_web', 'desc')->get();
          $dirweb2 = DB::connection('mysql')->table('direcciones_web')->where('linkdirecciones_web','!=',null)->OrderBy('iddirecciones_web', 'desc')->get();
@@ -41,7 +44,7 @@ class HomeController extends Controller
         // ponemos la regla de permisos
         if(Auth::user()->can('acceso_gestionportales'))
         {
-            return view('main', compact('dirweb','dirweb2','usuarios'));
+            return view('main', compact('dirweb','dirweb2','usuarios','nombreportalweb'));
         }
         else{
             return view('noacceso');

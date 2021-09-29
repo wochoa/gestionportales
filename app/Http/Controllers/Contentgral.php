@@ -539,7 +539,7 @@ class Contentgral extends Controller {
 		if($request->file('imgpopupp'))
 		{
 			$archivo = $request->file('imgpopupp')->store('public/popup');
-			$image=",nompopup='".$archivo."',";
+			$image=",nompopup='".$archivo."'";
 		}
 		else
 		{
@@ -548,7 +548,7 @@ class Contentgral extends Controller {
 		$titulo=$datos["nombrep"];
 		$url=$datos["urlp"];
 		$ippop=$datos["idpopup"];
-		$sql="UPDATE popup set titulopopup='$titulo'".$image." enlace_popup='$url' where idpopup=$ippop";
+		$sql="UPDATE popup set titulopopup='$titulo'".$image.", enlace_popup='$url' where idpopup=$ippop";
 
 		DB::connection('mysql')->update($sql);
 

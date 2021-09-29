@@ -42,14 +42,14 @@ $act_sgd=substr($enlcae,0,3);//sgd
   <!-- summernote -->
   <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
   <!-- Google Font: Source Sans Pro -->
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap" rel="stylesheet">
-  <style type="text/css">
+  {{-- <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet"> --}}
+  {{-- <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap" rel="stylesheet"> --}}
+  {{-- <style type="text/css">
     body{
        font-family: 'Oswald', sans-serif;
     }
     
-  </style>
+  </style> --}}
 @yield('css')
   <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
   <link rel="stylesheet" href="{{ asset('dist/css/stylo.css') }}">

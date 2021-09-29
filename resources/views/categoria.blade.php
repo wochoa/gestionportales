@@ -67,7 +67,11 @@
                             </thead>
                             <tbody>
                                 @foreach($datos as $cat)
-                                <tr><td>{{ $cat->idcategoria }}</td><td>{{ $cat->nomcategoia }}</td><td>{{ $cat->created_at }}</td><td>ss</td></tr>
+                                <tr><td>{{ $cat->idcategoria }}</td><td>{{ $cat->nomcategoia }}</td><td>{{ $cat->created_at }}</td><td nowrap>
+                                    
+                                    @can('gp_anuncios_editar')<a href="#" class="btn btn-sm btn-default" title="Editar" data-toggle="modal" data-target="#editpopup" onclick="cargardatos({{ $cat->idcategoria }})"><i class="fa fa-edit"></i></a>@endcan
+                                    @can('gp_anuncios_eliminar')<a href="/eliminapopup/{{ $cat->idcategoria }}" class="btn btn-sm btn-default" title="Eliminar"><i class="fa fa-trash"></i></a>@endcan
+                                    </td></tr>
                                 @endforeach
                             </tbody>
                         </table>
