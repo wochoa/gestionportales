@@ -52,7 +52,7 @@
                             </div> --}}
                             	                 
                         </div>
-                        @can('gp_anuncios_crear')
+                        @can('gp_slider_crear')
                         <div class="card-footer">
                         <button type="submit" class="btn btn-primary btn-sm float-sm-right"><i class="fa fa-save"></i> Guardar</button>
                         </div>
@@ -93,8 +93,8 @@
                                             <a href="/activaslider/{{ $sli->idslider }}"><i class="fa fa-toggle-off"></i></a>
                                         @endif
                                         &nbsp;&nbsp;&nbsp;&nbsp;
-                                        @can('gp_anuncios_editar')<a href="#" class="btn btn-sm btn-default" title="Editar" data-toggle="modal" data-target="#editslider" onclick="cargardatos({{ $sli->idslider }})"><i class="fa fa-edit"></i></a>@endcan
-                                        @can('gp_anuncios_eliminar')<a href="/eliminapopup/{{ $sli->idslider }}" class="btn btn-sm btn-default" title="Eliminar"><i class="fa fa-trash"></i></a>@endcan
+                                        @can('gp_slider_editar')<a href="#" class="btn btn-sm btn-default" title="Editar" data-toggle="modal" data-target="#editslider" onclick="cargardatos({{ $sli->idslider }})"><i class="fa fa-edit"></i></a>@endcan
+                                        @can('gp_slider_eliminar')<a href="/eliminapopup/{{ $sli->idslider }}" class="btn btn-sm btn-default" title="Eliminar"><i class="fa fa-trash"></i></a>@endcan
                                     </td>
                                 </tr>
                                 @endforeach

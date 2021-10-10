@@ -86,12 +86,14 @@
             </a>
           </li>
           @endcan
+          @can('gp_slider_leer')          
           <li class="nav-item">
             <a href="{{ url('/portalweb/slider') }}" class="nav-link {{ activo('slider') }}">
               <i class="far fa-circle nav-icon"></i>
               <p>Slider</p>
             </a>
           </li>
+          @endcan
           @can('gp_enlaceref_leer')
           <li class="nav-item">
             <a href="{{ url('/portalweb/enlaceref') }}" class="nav-link {{ activo('enlaceref') }}">

@@ -12,9 +12,17 @@
         <div class="card-body">
           <p>Bienvenido, {{ Auth::user()->adm_name }} {{ Auth::user()->adm_lastname }}</p>
           <p>Usted administra portal web de: <strong class="text-danger">{{ $nombreportalweb }}</strong></p>
-          <p>Su rol es:</p>
+          <p>Su rol es:
+            @forelse($colroles as $clrol)
+              @if($clrol->role_id>=5 and $clrol->role_id<=9)
+                <span class="text-danger"> {{ $clrol->name }}</span>
+              @endif
+            @empty
+              Notiene ningún rol para esta página
+            @endforelse
+          </p>
           <div class="alert bg-secondary">
-            Si desea cambiar de rol comuniquese con el administrador de sistemas
+            Si desea cambiar de rol comuníquese con el administrador de sistemas
           </div>
         </div>
       </div>
@@ -29,10 +37,11 @@
                   @php
                       $total=count($dirweb)+count($dirweb2);
                   @endphp
-                  <h3>{{ $total }} Registrados</h3>
+                  <h3>{{ $total }} </h3>{{-- Registrados --}}
           
-                  <p><span class="badge badge-warning right">{{ count($dirweb) }}</span> Páginas creadas 
-                    <span class="badge badge-warning right">{{ count($dirweb2) }}</span>  web propio</p>
+                  <p><span class="badge badge-warning right">{{ count($dirweb) }}</span> Portales creadas 
+                    {{-- <span class="badge badge-warning right">{{ count($dirweb2) }}</span>  web propio --}}
+                  </p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-bag"></i>

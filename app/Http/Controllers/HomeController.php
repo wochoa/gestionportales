@@ -36,6 +36,9 @@ class HomeController extends Controller
          
          $dirweb = DB::connection('mysql')->table('direcciones_web')->where('dns_direcciones_web','!=',null)->OrderBy('iddirecciones_web', 'desc')->get();
          $dirweb2 = DB::connection('mysql')->table('direcciones_web')->where('linkdirecciones_web','!=',null)->OrderBy('iddirecciones_web', 'desc')->get();
+
+         // consulta para sacar el rol para la persona
+         $colroles=DB::table('model_has_roles')->join('roles','model_has_roles.role_id','=','roles.id')->where('model_id',$iduser)->get();
  
  
          // total de usuarios creados
@@ -44,7 +47,7 @@ class HomeController extends Controller
         // ponemos la regla de permisos
         if(Auth::user()->can('acceso_gestionportales'))
         {
-            return view('main', compact('dirweb','dirweb2','usuarios','nombreportalweb'));
+            return view('main', compact('dirweb','dirweb2','usuarios','nombreportalweb','colroles'));
         }
         else{
             return view('noacceso');
