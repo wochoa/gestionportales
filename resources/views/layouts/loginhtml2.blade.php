@@ -43,7 +43,7 @@
 <!-- BEGIN: Body-->
 
 <body class="vertical-layout vertical-menu-modern blank-page navbar-floating footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="blank-page" 
-style="background: #2d1f54 url('dist/img/fondo2.jpg') no-repeat center center fixed;
+style="background: #577687 url('dist/img/fondo2.jpg') no-repeat center center fixed;
 -webkit-background-size: cover;
 -moz-background-size: cover;
 -o-background-size: cover;

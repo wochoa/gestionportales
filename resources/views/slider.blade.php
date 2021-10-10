@@ -43,6 +43,7 @@
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Insertar imagen</label>
                                 <input type="file" class="form-control" name="imgpopup" accept=".jpg,.jpeg,.png"  required>
+                                <span>Tamaño de imagen debe ser: 3390x715 pixeles</span>
                             </div>
                             {{-- <div class="form-group">
                                 <label for="exampleInputEmail1">Url para mas información</label>
@@ -70,14 +71,21 @@
                         @endphp --}}
                         
                         
-                        <table class="table table-bordered table-sm table-hover table-responsive">
+                        <table class="table table-bordered table-sm table-hover ">{{-- table-responsive --}}
                             <thead class="bg-secondary">
-                                <tr><th>Id</th><th>imagen</th><th>Fecha creacion</th><th>Acciones</th></tr>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>imagen</th>
+                                    <th>Fecha creacion</th>
+                                    <th>Acciones</th>
+                                </tr>
                             </thead>
                             <tbody>
                                 @foreach($datoslider as $sli)
                                 <tr>
-                                    <td>{{ $sli->idslider }}</td><td>{{ $sli->img_slider }}</td><td>{{ $sli->created_at }}</td>
+                                    <td>{{ $sli->idslider }}</td>
+                                    <td>{{ $sli->img_slider }}</td>
+                                    <td>{{ $sli->created_at }}</td>
                                     <td nowrap>
                                         @if($sli->activo_slider==1)
                                             <a href="/desactivaslider/{{ $sli->idslider }}"><i class="fa fa-toggle-on"></i></a>
