@@ -118,7 +118,7 @@
                             </thead>
                             <tbody>
                                 @foreach($dato as $sec)
-                                <tr><td>{{ $sec->idseccion }}</td><td>{{ $sec->texto_enlace }}</td><td>Seccion {{ $sec->seccion_pag }}</td><td>{{ $sec->created_at }}</td><td>
+                                <tr><td>{{ $sec->idseccion }}</td><td>{!! $sec->texto_enlace  !!}</td><td>Seccion {{ $sec->seccion_pag }}</td><td>{{ $sec->created_at }}</td><td>
                                 @if($sec->activo==1)
                                     <a href="/desactivaseccion/{{ $sec->idseccion }}"><i class="fa fa-toggle-on"></i></a>
                                     @else
@@ -151,7 +151,7 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Editar submenu</h4>
+          <h4 class="modal-title">Editar secciones</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>

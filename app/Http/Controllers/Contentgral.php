@@ -555,6 +555,84 @@ class Contentgral extends Controller {
 		session()->flash('updatepopup', 'Fue actualizado el anuncio emergente');
 		return back()->withInput();
 	}
+
+	public function slider()
+	{
+		// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
+		$iduser=Auth::user()->id;
+		$idweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
+
+		$datoslider=DB::connection('mysql')->table('slider')->where('iddirecciones_web',$idweb)->orderBy('idslider','DESC')->paginate(10);
+		return view('slider',compact('datoslider'));
+	}
+
+	public function addrregslider(Request $request)
+	{
+		$datos = $request->all();
+		
+		$archivo = $request->file('imgpopup')->store('public/slider');
+
+		// $iddirweb=$datos['iddirweb'];
+		// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
+		$iduser=Auth::user()->id;
+		$iddirweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
+		//$iddirweb = $accesoweb[0]->iddirecciones_web;
+
+
+		$fecha = date('Y-m-d H:i:s');
+
+		DB::connection('mysql')->insert('insert into slider (img_slider,activo_slider,iddirecciones_web,created_at) values (?, ?,?,?)', [$archivo,1,$iddirweb,$fecha]);
+
+		session()->flash('success', 'Fue agregado nueva imagen slider');
+		return back()->withInput();
+		// return $archivo ;
+	}
+	public function datoslider($id)
+	{
+		$datos=DB::connection('mysql')->table('slider')->where('idslider',$id)->get();
+		return $datos;
+	}
+
+	public function editslider(Request $request)
+	{
+		$datos=$request->all();
+		$request->validate(['imgpopupp'=>'required']);
+
+		if($request->file('imgpopupp'))
+		{
+			$archivo = $request->file('imgpopupp')->store('public/slider');
+			$image="img_slider='".$archivo."'";
+		}
+		else
+		{
+			$image='';
+		}
+
+		$ippop=$datos["idslider"];
+		$sql="UPDATE slider set ".$image." where idslider=$ippop";
+
+		DB::connection('mysql')->update($sql);
+
+		session()->flash('updatepopup', 'Fue actualizado el slider');
+		return back()->withInput();
+	}
+
+	public function desactivaslider($id)
+	{
+		$sql="UPDATE slider SET activo_slider=0 WHERE idslider=$id";
+		DB::connection('mysql')->update($sql);
+		session()->flash('desactivapopup', 'Fue desactivado el slider');
+		return back()->withInput();
+	}
+	public function activaslider($id)
+	{
+		$sql="UPDATE slider SET activo_slider=1 WHERE idslider=$id";
+		DB::connection('mysql')->update($sql);
+		session()->flash('activapopup', 'Fue activado el slider');
+		return back()->withInput();
+	}
+
+
 	public function seccion()
 	{
 		// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
@@ -973,6 +1051,11 @@ class Contentgral extends Controller {
 		DB::connection('mysql')->update($sql);
 		session()->flash('eliminadoref', 'Fue eliminado la referencia con exito');
 		return back()->withInput();
+	}
+
+	public function reclamaciones()
+	{
+		return view('reclamaciones');
 	}
 
 	

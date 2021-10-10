@@ -13,8 +13,8 @@
       
       @can('acceso_gestionportales')
       @can('gp_menu_portalweb')
-      <li class="nav-item has-treeview {{ menuopen(['publicacion','menus','modulopagina','tema','tags','categoria','popup','seccion','enlaceref'])}}">
-          <a href="#" class="nav-link {{ tituloactivo(['publicacion','menus','modulopagina','tema','tags','categoria','popup','seccion','enlaceref']) }}"><i class="nav-icon fas fa-tachometer-alt"></i><p>Portal web<i class="right fas fa-angle-left"></i></p></a>
+      <li class="nav-item has-treeview {{ menuopen(['publicacion','menus','modulopagina','tema','tags','categoria','popup','seccion','slider','enlaceref'])}}">
+          <a href="#" class="nav-link {{ tituloactivo(['publicacion','menus','modulopagina','tema','tags','categoria','popup','seccion','slider','enlaceref']) }}"><i class="nav-icon fas fa-tachometer-alt"></i><p>Portal web<i class="right fas fa-angle-left"></i></p></a>
         <ul class="nav nav-treeview">
           @can('gp_configuracion_tema')
           <li class="nav-item">
@@ -86,6 +86,12 @@
             </a>
           </li>
           @endcan
+          <li class="nav-item">
+            <a href="{{ url('/portalweb/slider') }}" class="nav-link {{ activo('slider') }}">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Slider</p>
+            </a>
+          </li>
           @can('gp_enlaceref_leer')
           <li class="nav-item">
             <a href="{{ url('/portalweb/enlaceref') }}" class="nav-link {{ activo('enlaceref') }}">
@@ -99,8 +105,8 @@
       @endcan
       
       @can('pg_menu_ciudadano')
-      <li class="nav-item has-treeview">
-        <a href="#" class="nav-link">
+      <li class="nav-item has-treeview {{ menuopen(['reclamaciones'])}}">
+        <a href="#" class="nav-link {{ tituloactivo(['reclamaciones']) }}">
           <i class="nav-icon fas fa-tachometer-alt"></i>
           <p>
             Ciudadanos
@@ -110,7 +116,7 @@
         <ul class="nav nav-treeview">
           @can('pg_libroreclamaciones_leer')
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="{{ route('reclamaciones') }}" class="nav-link {{ activo('reclamaciones') }}">
               <i class="far fa-circle nav-icon"></i>
               <p>Libro reclamaciones</p>
             </a>

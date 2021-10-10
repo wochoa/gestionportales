@@ -57,6 +57,12 @@ Route::get('storage/popup/{file}', function ($file) {
 	//return $rutaDeArchivo;
 	return response()->file($rutaDeArchivo);
 });
+Route::get('storage/slider/{file}', function ($file) {
+
+	$rutaDeArchivo = storage_path() . '/app/public/slider/' . $file;
+	//return $rutaDeArchivo;
+	return response()->file($rutaDeArchivo);
+});
 Route::get('storage/seccion/{file}', function ($file) {
 
 	$rutaDeArchivo = storage_path() . '/app/public/seccion/' . $file;
@@ -144,6 +150,14 @@ route::get('/activapopup/{id}','Contentgral@activapopup')->name('activapopup');
 route::post('/editpopup','Contentgral@editpopup')->name('editpopup');
 route::get('/datopopup/{id}','Contentgral@datopopup')->name('datopopup');
 
+// Slider
+route::get('/portalweb/slider','Contentgral@slider')->name('slider');
+route::post('/addrregslider','Contentgral@addrregslider')->name('addrregslider');
+route::get('/desactivaslider/{id}','Contentgral@desactivaslider')->name('desactivaslider');
+route::get('/activaslider/{id}','Contentgral@activaslider')->name('activaslider');
+route::post('/editslider','Contentgral@editslider')->name('editslider');
+route::get('/datoslider/{id}','Contentgral@datoslider')->name('datoslider');
+
 // seccion pagina principal
 route::get('/portalweb/seccion','Contentgral@seccion')->name('seccion');
 route::post('/addregseccion','Contentgral@addregseccion')->name('addregseccion');
@@ -177,6 +191,9 @@ route::post('/addregenlaceref','Contentgral@addregenlaceref')->name('addregenlac
 route::get('/desactivarefe/{id}','Contentgral@desactivarefe')->name('desactivarefe');
 route::get('/activarefe/{id}','Contentgral@activarefe')->name('activarefe');
 route::get('/elimnarefe/{id}','Contentgral@elimnarefe')->name('elimnarefe');
+
+// enlace para reclamaciones
+route::get('/reclamaciones','Contentgral@reclamaciones')->name('reclamaciones');
 
 // PARA CONSULTAS A SGD DE /mesaparte, /informaticos y /directoresyjefes
 
