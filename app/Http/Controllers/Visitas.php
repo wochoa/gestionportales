@@ -29,7 +29,7 @@ class Visitas extends Controller
 
     public function reniec($id)
     {
-        $url='https://app.regionhuanuco.gob.pe/soap_pruebas/reniec.php?cdni='.$id;
+        $url='http://app.regionhuanuco.gob.pe/soap_pruebas/reniec.php?cdni='.$id;
 
         $wsdl = file_get_contents($url);
         return $wsdl;
