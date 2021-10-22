@@ -134,7 +134,7 @@ $act_sgd=substr($enlcae,0,3);//sgd
             <a href="#" class="dropdown-item">
             <!-- Message Start -->
             <div class="media">
-              <img src="{{ asset(Storage::url(Auth::user()->avatar)) }}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+              <img src="{{ $avatar }}" alt="User Avatar" class="img-size-50 mr-3 img-circle">{{-- asset(Storage::url(Auth::user()->avatar))  --}}
               <div class="media-body">
                 <h3 class="dropdown-item-title">
                   {{ Auth::user()->adm_name }} {{ Auth::user()->adm_lastname }}
@@ -185,7 +185,7 @@ $act_sgd=substr($enlcae,0,3);//sgd
       <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{{ asset(Storage::url(Auth::user()->avatar)) }}" class="img-circle elevation-2" alt="User Image">
+          <img src="{{ $avatar }}" class="img-circle elevation-2" alt="User Image">{{-- asset(Storage::url(Auth::user()->avatar)) --}}
         </div>
         <div class="info">
           <a href="#" class="d-block">{{ Auth::user()->adm_name }}</a>
