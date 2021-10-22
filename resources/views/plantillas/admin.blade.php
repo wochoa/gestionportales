@@ -62,11 +62,13 @@ $act_sgd=substr($enlcae,0,3);//sgd
   @if(Auth::user()->avatar)
     @php
       $avatar=Storage::url(Auth::user()->avatar)
+      $ava=Auth::user()->avatar;
+      $avatar='http://goredigital.regionhuanuco.gob.pe/storage/'.$ava;
     @endphp
   @else
     @php
       //$avatar=asset('dist/img/avatar.png');
-      $avatar=Storage::url('avatar/avatar.png')
+      $avatar=Storage::url('avatar/logo.png')
     @endphp
   @endif
   {{-- FINALIZAMOS LA IMAGEN DE AVATAR --}}
