@@ -86,6 +86,8 @@ Route::get('/register', function () {
 Route::get('/password/reset', function () {
     return redirect('/');
 });
+
+
 //Route::view('/login','auth.login')->name('login');
 Route::view('/recuperacion', 'recuperacion')->name('recuperacion');
 Route::view('/registrauser', 'registrauser')->name('registrauser');
@@ -134,6 +136,10 @@ route::get('portalweb/editarpag/{id}','Contentgral@editarpag')->name('editarpag'
 Route::post('/updatepagina','Contentgral@updatepagina')->name('updatepagina');//portalweb/eliminarpag/68
 route::get('portalweb/eliminarpag/{id}','Contentgral@eliminarpag')->name('eliminarpag');
 
+// convocatoria
+route::get('/portalweb/convocatoria','Contentgral@convocatoria')->name('convocatoria');
+route::get('/verarchivoscas/{id}','Contentgral@verarchivoscas')->name('verarchivoscas');
+route::post('/forarchivoscas','Contentgral@forarchivoscas')->name('forarchivoscas');
 // categoria
 route::get('/portalweb/categoria','Contentgral@categoria')->name('categoria');
 route::post('/addregcategoria','Contentgral@addregcategoria')->name('addregcategoria');

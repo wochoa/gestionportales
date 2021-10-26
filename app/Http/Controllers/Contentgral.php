@@ -1058,6 +1058,33 @@ class Contentgral extends Controller {
 		return view('reclamaciones');
 	}
 
+	public function convocatoria()
+	{
+		$iduser=Auth::user()->id;
+		$idweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');// id de pagina web
+
+		// optenemos la relacion de proceso cas
+		$procesocas=DB::connection('mysql')->table('cas_proceso_seleccion')->where('iddireccionweb',$idweb)->orderBy('id_proc_sel_cas','DESC')->paginate(10);
+		//$idweb = $accesoweb[0]->iddirecciones_web;
+		return view('convocatoria',compact('procesocas'));
+	}
+	public function verarchivoscas($id)
+	{
+		$archivoprocesocas=DB::connection('mysql')->table('archivo_sel_cas')->where('id_proceso_selec',$id)->orderBy('idarchivo_sel_cas','DESC')->get();
+		
+		return convert_from_latin1_to_utf8_recursively($archivoprocesocas);
+	}
+	public function forarchivoscas(Request $request)
+	{
+		//$request->validate(['idproceso'=>'required','archivo'=>'required','url'=>'required','etapa'=>'required']);
+		$id=$request->idproceso;
+		$nombre=$request->archivo;
+		$url=$request->url;
+		$etapa=$request->etapa;
+
+		DB::connection('mysql')->insert('insert into archivo_sel_cas (nom_archivo, url_archivo,etapa,id_proceso_selec) values (?, ?,?,?)', [$nombre,$url,$etapa,$id]);
+	}
+
 	
 	
 
