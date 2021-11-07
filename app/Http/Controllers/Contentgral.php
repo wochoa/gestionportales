@@ -1063,10 +1063,13 @@ class Contentgral extends Controller {
 		$iduser=Auth::user()->id;
 		$idweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');// id de pagina web
 
+
+        $dnweb=DB::connection('mysql')->table('direcciones_web')->where('iddirecciones_web',$idweb)->value('dns_direcciones_web');
+
 		// optenemos la relacion de proceso cas
 		$procesocas=DB::connection('mysql')->table('cas_proceso_seleccion')->where('iddireccionweb',$idweb)->orderBy('id_proc_sel_cas','DESC')->paginate(10);
 		//$idweb = $accesoweb[0]->iddirecciones_web;
-		return view('convocatoria',compact('procesocas'));
+		return view('convocatoria',compact('procesocas','dnweb'));
 	}
 	public function verarchivoscas($id)
 	{

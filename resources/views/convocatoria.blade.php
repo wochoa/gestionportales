@@ -5,13 +5,13 @@
 @endsection
 
 @section('titulosuperior')
-<div class="col-sm-6">
+<div class="col-sm-8">
     <h1>
-      Registro de categorias
-      <small></small>
+      Registro de Convocatorias
+      <small>(Enlace para compartir: <span>{{ $dnweb }}/convocatorias</span> )</small>
     </h1>
   </div>
-  <div class="col-sm-6">
+  <div class="col-sm-4">
     <ol class="breadcrumb float-sm-right">
       <li class="breadcrumb-item"><a href="/">Main</a></li>
       <li class="breadcrumb-item active">categorias</li>
