@@ -1083,10 +1083,104 @@ class Contentgral extends Controller {
 		$etapa=$request->etapa;
 
 		DB::connection('mysql')->insert('insert into archivo_sel_cas (nom_archivo, url_archivo,etapa,id_proceso_selec) values (?, ?,?,?)', [$nombre,$url,$etapa,$id]);
+		session()->flash('newitemproceso', 'Fue creado nuevo item al proceso');
+		return back()->withInput();
 	}
 
-	
-	
+	public function addregprocesocas(Request $request)
+	{
+		$iduser=Auth::user()->id;
+		$idweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');// id de pagina web
 
-	
+		$nomproceso=$request->nomproceso;
+		$inicioinscripcion=$request->inicioinscripcion;
+		$fininscripcion=$request->fininscripcion;
+		$fecharesultado=$request->fecharesultado;
+
+		DB::connection('mysql')->insert('insert into cas_proceso_seleccion (proc_sel_cas_descripcion, proc_sel_cas_fecha_inicio,cas_proc_sel_fecha_fin_inscripcion,proc_sel_cas_fecha_termino,cas_proc_sel_fecha_resultados,cas_proc_sel_estado,iddireccionweb) values (?, ?,?,?,?,?,?)', [$nomproceso,$inicioinscripcion,$fininscripcion,$fecharesultado,$fecharesultado,1,$idweb]);
+
+		session()->flash('newproceso', 'Fue creado nuevo proceso');
+		return back()->withInput();
+	}
+
+	public function verprocesocas($id)
+	{
+		$procesocas=DB::connection('mysql')->table('cas_proceso_seleccion')->where('id_proc_sel_cas',$id)->get();
+		return convert_from_latin1_to_utf8_recursively($procesocas);
+	}
+
+	public function updateprocesocas(Request $request)
+	{
+		$id=$request->ipprocess;
+		$nomproceso="'".$request->nomprocesos."'";
+		$inicioinscripcion="'".date('Y-m-d' , strtotime($request->inicioinscripcions))."'";
+		$fininscripcion="'".date('Y-m-d' , strtotime($request->fininscripcions))."'";
+		$fecharesultado="'".date('Y-m-d' , strtotime($request->fecharesultados))."'";
+
+		DB::connection('mysql')->update('update cas_proceso_seleccion set proc_sel_cas_descripcion = '.$nomproceso.',proc_sel_cas_fecha_inicio = '.$inicioinscripcion.',cas_proc_sel_fecha_fin_inscripcion = '.$fininscripcion.',proc_sel_cas_fecha_termino = '.$fecharesultado.',cas_proc_sel_fecha_resultados = '.$fecharesultado.' where id_proc_sel_cas = ?', [$id]);
+
+		session()->flash('procesoeditado', 'Fue creado actualizado el proceso');
+		return back()->withInput();
+	}
+	public function eliminaritemproceso($id)
+	{
+		DB::connection('mysql')->table('archivo_sel_cas')->where('idarchivo_sel_cas',$id)->delete();
+		session()->flash('archivoeliminado', 'Fue eliminado el item del proceso');
+		return back()->withInput();
+	}
+	public function verarchivoitemproceso($id)
+	{
+		$procesocas=DB::connection('mysql')->table('archivo_sel_cas')->where('idarchivo_sel_cas',$id)->get();
+		return convert_from_latin1_to_utf8_recursively($procesocas);
+	}
+	public function frmeditararchivoproceso(Request $request)
+	{
+		$id=$request->idarchivoproc;
+		$nombre="'".$request->archivoedits."'";
+		$url="'".$request->urls."'";
+		$etapa="'".$request->etapas."'";
+
+		DB::connection('mysql')->update('update archivo_sel_cas set nom_archivo='.$nombre.',url_archivo='.$url.',etapa='.$etapa.' where idarchivo_sel_cas=?',[$id]);
+		session()->flash('archivoselcas', 'Fue creado actualizado el item');
+		return back()->withInput();
+		
+	}
+
+	public function fag()
+	{
+		$iduser=Auth::user()->id;
+		$idpag=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
+		//$idpaginaweb = $accesoweb[0]->iddirecciones_web;
+
+		$datos=DB::connection('mysql')->table('fag')->where('iddirecciones_web',$idpag)->orderBy('idfag','desc')->paginate(12);
+		return view('fag',compact('datos'));
+	}
+
+	public function addfag(Request $request)
+	{
+		//$datos = $request->all();
+		
+		$archivo = $request->file('archivo')->store('public/fag');
+
+		// $iddirweb=$datos['iddirweb'];
+		// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
+		$iduser=Auth::user()->id;
+		$iddirweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
+		//$iddirweb = $accesoweb[0]->iddirecciones_web;
+
+		$fecha=$request->fecha;
+		$mes=date('m' , strtotime($fecha));
+		$ano = date('Y' , strtotime($fecha));
+
+		DB::connection('mysql')->insert('insert into fag (ano,mes,img,iddirecciones_web,created_at,updated_at) values (?, ?,?,?,?,?)', [$ano,$mes,$archivo,$iddirweb,$fecha,$fecha]);
+
+		session()->flash('success', 'Fue agregado nuevo registro de FAG');
+		return back()->withInput();
+	}
+	public function eliminarfag($id)
+	{
+		DB::connection('mysql')->table('fag')->where('idfag',$id)->delete();
+		session()->flash('archivoeliminado', 'Fue eliminado registro de FAG');
+		return back()->withInput();
+	}
 }

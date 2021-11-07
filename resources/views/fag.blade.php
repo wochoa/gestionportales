@@ -1,20 +1,20 @@
 @extends('plantillas.admin')
 
 @section('titulopagina')
-	Portalweb | categoria
+	Portalweb | FAG
 @endsection
 
 @section('titulosuperior')
 <div class="col-sm-6">
     <h1>
-      Registro de categorias
+      Registro de FAG
       <small></small>
     </h1>
   </div>
   <div class="col-sm-6">
     <ol class="breadcrumb float-sm-right">
       <li class="breadcrumb-item"><a href="/">Main</a></li>
-      <li class="breadcrumb-item active">categorias</li>
+      <li class="breadcrumb-item active">FAG</li>
     </ol>
   </div>
 @endsection
@@ -30,15 +30,19 @@
             <div class="col-sm-4">
                 <div class="card card-primary card-outline">
                     <div class="card-header">
-                        <h3 class="card-title">Nueva categoria para publicaciones</h3>
+                        <h3 class="card-title">Nuevo Fondo de Apoyo Gerencial(FAG)</h3>
                     </div> <!-- /.card-body -->
-                    <form class="form" method="post" action="{{ route('addregcategoria') }}">
+                    <form class="form" method="post" action="{{ route('addfag') }}" enctype="multipart/form-data">
                         @csrf
                         {{-- <input type="hidden" name="iddirweb"  value="{{ Auth::user()->iddirecciones_web }}"> --}}
                         <div class="card-body">					
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Nombre de la categoria</label>
-                                <input type="text" class="form-control" name="nomdireccion" placeholder="Ejem. publicacion, insttitucional" required>
+                                <label for="exampleInputEmail1">Fecha</label>
+                                <input type="date" class="form-control" name="fecha" placeholder="Ejem. publicacion, insttitucional" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Archivo en imgagen</label>
+                                <input type="file" class="form-control" name="archivo" placeholder="Ejem. publicacion, insttitucional" required>
                             </div>
                             	                 
                         </div>
@@ -53,7 +57,7 @@
             <div class="col-sm-8">
                 <div class="card card-dark card-outline">
                     <div class="card-header">
-                        <h3 class="card-title">Listado de categorias</h3>
+                        <h3 class="card-title">Listado de FAG</h3>
                     </div>
                     <div class="card-body">
                         {{-- @php
@@ -63,14 +67,14 @@
                         
                         <table class="table table-bordered table-sm table-hover ">
                             <thead class="bg-secondary">
-                                <tr><th>Id</th><th>Nombre</th><th>Fecha creacion</th><th>Acciones</th></tr>
+                                <tr><th>Id</th><th>año</th><th>mes</th><th>archivo img</th><th>Acciones</th></tr>
                             </thead>
                             <tbody>
                                 @foreach($datos as $cat)
-                                <tr><td>{{ $cat->idcategoria }}</td><td>{{ $cat->nomcategoia }}</td><td>{{ $cat->created_at }}</td><td nowrap>
+                                <tr><td>{{ $cat->idfag }}</td><td>{{ $cat->ano }}</td><td>{{ $cat->mes }}</td><td>{{ $cat->img }}</td><td nowrap>
                                     
-                                    @can('gp_anuncios_editar')<a href="#" class="btn btn-sm btn-default" title="Editar" data-toggle="modal" data-target="#editpopup" onclick="cargardatos({{ $cat->idcategoria }})"><i class="fa fa-edit"></i></a>@endcan
-                                    @can('gp_anuncios_eliminar')<a href="/eliminapopup/{{ $cat->idcategoria }}" class="btn btn-sm btn-default" title="Eliminar"><i class="fa fa-trash"></i></a>@endcan
+                                    @can('gp_anuncios_editar')<a href="#" class="btn btn-sm btn-default" title="Editar" data-toggle="modal" data-target="#editpopup" onclick="cargardatos({{ $cat->idfag }})"><i class="fa fa-edit"></i></a>@endcan
+                                    @can('gp_anuncios_eliminar')<a href="/eliminarfag/{{ $cat->idfag }}" class="btn btn-sm btn-default" title="Eliminar"><i class="fa fa-trash"></i></a>@endcan
                                     </td></tr>
                                 @endforeach
                             </tbody>
@@ -78,7 +82,7 @@
                         
                     </div>
                     <div class="card-footer clearfix">
-                    {{-- {{ $datos->links() }} --}}
+                    {{ $datos->links() }}
                 </div>
                 </div>
                 
@@ -107,6 +111,10 @@
 <script type="text/javascript">
     @if(Session::has('success'))
        toastr.success('{{ Session::get('success') }}')
+    @endif//
+
+    @if(Session::has('archivoeliminado'))
+       toastr.error('{{ Session::get('archivoeliminado') }}')
     @endif
 
 </script>

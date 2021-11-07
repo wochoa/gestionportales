@@ -57,6 +57,11 @@ Route::get('storage/popup/{file}', function ($file) {
 	//return $rutaDeArchivo;
 	return response()->file($rutaDeArchivo);
 });
+Route::get('storage/fag/{file}', function ($file) {
+
+	$rutaDeArchivo = storage_path() . '/app/public/fag/' . $file;
+	return response()->file($rutaDeArchivo);
+});
 Route::get('storage/slider/{file}', function ($file) {
 
 	$rutaDeArchivo = storage_path() . '/app/public/slider/' . $file;
@@ -140,9 +145,20 @@ route::get('portalweb/eliminarpag/{id}','Contentgral@eliminarpag')->name('elimin
 route::get('/portalweb/convocatoria','Contentgral@convocatoria')->name('convocatoria');
 route::get('/verarchivoscas/{id}','Contentgral@verarchivoscas')->name('verarchivoscas');
 route::post('/forarchivoscas','Contentgral@forarchivoscas')->name('forarchivoscas');
+route::post('/addregprocesocas','Contentgral@addregprocesocas')->name('addregprocesocas');//
+route::get('/verprocesocas/{id}','Contentgral@verprocesocas')->name('verprocesocas');//
+route::post('/updateprocesocas','Contentgral@updateprocesocas')->name('updateprocesocas');//
+route::get('/eliminaritemproceso/{id}','Contentgral@eliminaritemproceso')->name('eliminaritemproceso');//
+route::get('/verarchivoitemproceso/{id}','Contentgral@verarchivoitemproceso')->name('verarchivoitemproceso');//
+route::post('/frmeditararchivoproceso','Contentgral@frmeditararchivoproceso')->name('frmeditararchivoproceso');
+
 // categoria
 route::get('/portalweb/categoria','Contentgral@categoria')->name('categoria');
 route::post('/addregcategoria','Contentgral@addregcategoria')->name('addregcategoria');
+// fag
+route::get('/portalweb/fag','Contentgral@fag')->name('fag');
+route::post('/addfag','Contentgral@addfag')->name('addfag');//
+route::get('/eliminarfag/{id}','Contentgral@eliminarfag')->name('eliminarfag');
 
 // TAGS
 route::get('/portalweb/tags','Contentgral@tags')->name('tags');

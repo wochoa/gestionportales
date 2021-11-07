@@ -13,8 +13,8 @@
       
       @can('acceso_gestionportales')
       @can('gp_menu_portalweb')
-      <li class="nav-item has-treeview {{ menuopen(['publicacion','menus','modulopagina','tema','tags','categoria','popup','seccion','slider','enlaceref','convocatoria'])}}">
-          <a href="#" class="nav-link {{ tituloactivo(['publicacion','menus','modulopagina','tema','tags','categoria','popup','seccion','slider','enlaceref','convocatoria']) }}"><i class="nav-icon fas fa-tachometer-alt"></i><p>Portal web<i class="right fas fa-angle-left"></i></p></a>
+      <li class="nav-item has-treeview {{ menuopen(['publicacion','menus','modulopagina','tema','tags','categoria','popup','seccion','slider','enlaceref','convocatoria','fag'])}}">
+          <a href="#" class="nav-link {{ tituloactivo(['publicacion','menus','modulopagina','tema','tags','categoria','popup','seccion','slider','enlaceref','convocatoria','fag']) }}"><i class="nav-icon fas fa-tachometer-alt"></i><p>Portal web<i class="right fas fa-angle-left"></i></p></a>
         <ul class="nav nav-treeview">
           @can('gp_configuracion_tema')
           <li class="nav-item">
@@ -28,6 +28,12 @@
             <a href="{{ url('/portalweb/convocatoria') }}" class="nav-link {{ activo('convocatoria') }}">
               <i class="far fa-circle nav-icon"></i>
               <p>Convocatoria</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url('/portalweb/fag') }}" class="nav-link {{ activo('fag') }}">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Fondo apoyo gerencial</p>
             </a>
           </li>
           @can('gp_publicacion_leer')
