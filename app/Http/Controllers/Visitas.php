@@ -45,4 +45,19 @@ class Visitas extends Controller
         $regvisita=DB::connection('mysql')->table('regvisita')->where('iddirecciones_web',$idweb)->orderBy('idregvisita','DESC')->paginate(10);
         return view('reportevisit',compact('regvisita','dnweb'));
     }
+    public function reportevisitas(Request $request)
+    {
+        $request->validate(['fecha1'=>'required','fecha2'=>'required']);
+        $from = date('Y-m-d H:i:s',strtotime($request->fecha1));
+        $to = date('Y-m-d H:i:s',strtotime($request->fecha2));
+        $iduser=Auth::user()->id;
+		$idweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
+        $consulta=DB::connection('mysql')->table('regvisita')->where('iddirecciones_web',$idweb)->whereBetween('fechaingreso',[$from, $to])->get();
+        //DB::connection('mysql')->insert('insert into regvisita (id, name) values (?, ?)', [1, 'Dayle']);
+        //return $consulta;
+
+        $pdf=\PDF::loadView ('pdfreportevisita',compact('consulta'));
+        return $pdf->stream();
+
+    }
 }

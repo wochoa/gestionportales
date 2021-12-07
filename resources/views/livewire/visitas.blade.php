@@ -96,7 +96,7 @@
                         <div class="row">
                             <div class="col-sm-4">
                                 <div class="input-group">
-                                    <input type="search" class="form-control form-control-sm" placeholder="Digite la busqueda" wire:model="search" onkeyup="javascript:this.value=this.value.toUpperCase();">
+                                    <input type="search" class="form-control form-control-sm" placeholder="Digite la busqueda por DNI" wire:model="search" onkeyup="javascript:this.value=this.value.toUpperCase();">
                                     <div class="input-group-append">
                                         <button class="btn btn-sm btn-default">
                                             <i class="fa fa-search"></i>

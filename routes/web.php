@@ -233,3 +233,4 @@ route::get('/regvisitas','Visitas@index')->name('regvisitas');
 route::get('/reportevisit','Visitas@reportevisit')->name('reportevisit');
 
 route::get('/reniec/{dni}','Visitas@reniec')->name('reniec');
+route::post('reportevisitas','Visitas@reportevisitas')->name('reportevisitas');

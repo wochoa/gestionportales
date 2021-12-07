@@ -22,53 +22,7 @@
 
 	
 
-<div class="row">
-	
-		<div class="col-sm-12">
-			<div class="card card-primary card-outline">
-				<div class="card-header">
-		            <h3 class="card-title">Listado de Vistas</h3>
-		         </div> <!-- /.card-body -->
-				<div class="card-body">
-					<table class="table table-hover table-sm table-bordered">
-						<thead>
-							<tr><th>ID</th><th>DNI</th><th>NOMBRE</th><th>FECHA INGRESO</th><th>OFICINA</th><th>FECHA SALIDA</th><th>ASUNTO</th></tr>
-						</thead>
-						<tbody>
-							@forelse($regvisita as $key)
-								<tr>
-									<td>{{ $key->idregvisita }}</td>
-									<td>{{ $key->dni }}</td>
-									<td>{{ $key->nombre }}</td>
-									<td>{{ $key->fechaingreso }}</td>
-									<td>{{ $key->nom_oficina }}</td>
-									<td>{{ $key->fechasalida }}</td>
-									<td>{{ $key->motivo }}</td>
-								</tr>
-							@empty
-								
-							@endforelse
-						</tbody>
-                    </table>
-                    {{-- @php
-                        print_r($datospag);
-                    @endphp --}}
-				</div>
-				<div class="card-footer clearfix">
-	               {{ $regvisita->links() }} 
-	            </div>
-			</div>
-		</div>
-		{{-- <div class="col-sm-3">
-			<div class="card card-dark card-outline">
-				<div class="card-body">
-					sss
-				</div>
-			</div>
-		</div> --}}
-	
-	
-</div>
+@livewire('reporte-visitas')
 
 
 </div>

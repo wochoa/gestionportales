@@ -19,7 +19,7 @@ class Visitas extends Component
     public $nomoficina;
     public $idweb;
     public $foto;
-
+    public $search;
     public $dnisalida;
 
 
@@ -42,7 +42,7 @@ class Visitas extends Component
 
         $unidadorganica=DB::table('dependencia')->where('depe_depende',$iddepen)->orderBy('iddependencia','ASC')->get();
 
-        $regvisita=DB::connection('mysql')->table('regvisita')->where(['estado'=>1,'iddirecciones_web'=>$idpaginaweb])->paginate(10);
+        $regvisita=DB::connection('mysql')->table('regvisita')->where(['estado'=>1,'iddirecciones_web'=>$idpaginaweb])->where('dni', 'like', '%'.$this->search.'%')->paginate(10);
 
         return view('livewire.visitas', compact('unidadorganica','regvisita'));
     }
