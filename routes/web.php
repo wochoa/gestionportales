@@ -234,3 +234,7 @@ route::get('/reportevisit','Visitas@reportevisit')->name('reportevisit');
 
 route::get('/reniec/{dni}','Visitas@reniec')->name('reniec');
 route::post('reportevisitas','Visitas@reportevisitas')->name('reportevisitas');
+
+/// para consultas externa para el registro de visitas
+route::get('reporte_extrenovisitas','Externopagina@index')->name('reporexterno');
+route::get('listado_extrenovisitas/{id}','Externopagina@listado_extrenovisitas')->name('listado_extrenovisitas');
