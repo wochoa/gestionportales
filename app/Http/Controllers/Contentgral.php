@@ -754,7 +754,7 @@ class Contentgral extends Controller {
 
 		session()->flash('nuevapagina', 'Fue agregado nueva pagina');
 		return back()->withInput();
-		//return $datos;
+		// return $datos;
 	}
 
 	public function editarpag($id)

@@ -7,7 +7,7 @@ $act_sgd=substr($enlcae,0,3);//sgd
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="iso-8859-2">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>@yield('titulopagina')</title>
 
