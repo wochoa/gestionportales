@@ -29,7 +29,7 @@ class Visitas extends Controller
 
     public function reniec($id)
     {
-        $url='http://app.regionhuanuco.gob.pe/soap_pruebas/reniec.php?cdni='.$id;
+        $url='http://app.regionhuanuco.gob.pe/soap_pruebas/reniec.php?cdni='.$id.'&key=j53e130xRfEV1KYH1W2m57HToKRtaIYGKn0RlBqQUf9l2pCh8ewoK1inHj5HdVGb';
 
         $wsdl = file_get_contents($url);
         return $wsdl;
@@ -38,11 +38,11 @@ class Visitas extends Controller
     public function reportevisit()
     {
         $iduser=Auth::user()->id;
-		$idweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
-        $dnweb=DB::connection('mysql')->table('direcciones_web')->where('iddirecciones_web',$idweb)->value('dns_direcciones_web');
+		$idweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
+        $dnweb=DB::connection('pgsql_pag')->table('direcciones_web')->where('iddirecciones_web',$idweb)->value('dns_direcciones_web');
 		//$idweb = $accesoweb[0]->iddirecciones_web;
 
-        $regvisita=DB::connection('mysql')->table('regvisita')->where('iddirecciones_web',$idweb)->orderBy('idregvisita','DESC')->paginate(10);
+        $regvisita=DB::connection('pgsql_pag')->table('regvisita')->where('iddirecciones_web',$idweb)->orderBy('idregvisita','DESC')->paginate(10);
         return view('reportevisit',compact('regvisita','dnweb'));
     }
     public function reportevisitas(Request $request)
@@ -51,9 +51,9 @@ class Visitas extends Controller
         $from = date('Y-m-d H:i:s',strtotime($request->fecha1));
         $to = date('Y-m-d H:i:s',strtotime($request->fecha2));
         $iduser=Auth::user()->id;
-		$idweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
-        $consulta=DB::connection('mysql')->table('regvisita')->where('iddirecciones_web',$idweb)->whereBetween('fechaingreso',[$from, $to])->get();
-        //DB::connection('mysql')->insert('insert into regvisita (id, name) values (?, ?)', [1, 'Dayle']);
+		$idweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
+        $consulta=DB::connection('pgsql_pag')->table('regvisita')->where('iddirecciones_web',$idweb)->whereBetween('fechaingreso',[$from, $to])->get();
+        //DB::connection('pgsql_pag')->insert('insert into regvisita (id, name) values (?, ?)', [1, 'Dayle']);
         //return $consulta;
 
         $pdf=\PDF::loadView ('pdfreportevisita',compact('consulta'));

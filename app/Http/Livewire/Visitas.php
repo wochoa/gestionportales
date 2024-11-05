@@ -34,15 +34,15 @@ class Visitas extends Component
     {
         // consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
 		$iduser=Auth::user()->id;
-		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
+		$accesoweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
 		$idpaginaweb = $accesoweb;//$accesoweb[0]->iddirecciones_web;// sacamos la id de la direccion web en este caso 11= Gobierno regional Huanuco
         $this->idweb=$idpaginaweb;
 
-        $iddepen=DB::connection('mysql')->table('direcciones_web')->where('iddirecciones_web',$idpaginaweb)->value('iddependencia');// consultamos para sacar la id de dependencia
+        $iddepen=DB::connection('pgsql_pag')->table('direcciones_web')->where('iddirecciones_web',$idpaginaweb)->value('iddependencia');// consultamos para sacar la id de dependencia
 
         $unidadorganica=DB::table('dependencia')->where('depe_depende',$iddepen)->orderBy('iddependencia','ASC')->get();
 
-        $regvisita=DB::connection('mysql')->table('regvisita')->where(['estado'=>1,'iddirecciones_web'=>$idpaginaweb])->where('dni', 'like', '%'.$this->search.'%')->paginate(10);
+        $regvisita=DB::connection('pgsql_pag')->table('regvisita')->where(['estado'=>1,'iddirecciones_web'=>$idpaginaweb])->where('dni', 'like', '%'.$this->search.'%')->paginate(10);
 
         return view('livewire.visitas', compact('unidadorganica','regvisita'));
     }
@@ -68,7 +68,7 @@ class Visitas extends Component
           ]);
         //   $this->busofifuncionario($this->codoficina);
           $fecha=date('Y-m-d H:i:s');
-          DB::connection('mysql')->insert('insert into regvisita (dni, nombre,motivo,fechaingreso,ofi_codigo,nom_oficina,nom_funcionario,iprocedencia,iddirecciones_web,created_at) values (?, ?,?,?,?,?,?,?,?,?)', [
+          DB::connection('pgsql_pag')->insert('insert into regvisita (dni, nombre,motivo,fechaingreso,ofi_codigo,nom_oficina,nom_funcionario,iprocedencia,iddirecciones_web,created_at) values (?, ?,?,?,?,?,?,?,?,?)', [
               $this->ndni,
               $this->nombres,
               $this->motivo,
@@ -108,7 +108,7 @@ class Visitas extends Component
     public function Regsalida()
     {
         $this->validate(['dnisalida'=>'required']);
-        $datos=DB::connection('mysql')->table('regvisita')->where(['dni'=>$this->dnisalida,'estado'=>1])->orderBy('idregvisita','DESC')->get();
+        $datos=DB::connection('pgsql_pag')->table('regvisita')->where(['dni'=>$this->dnisalida,'estado'=>1])->orderBy('idregvisita','DESC')->get();
 
         $iduser=@$datos[0]->idregvisita;
         $fechasalida=date("Y-m-d H:i:s");
@@ -116,7 +116,7 @@ class Visitas extends Component
         $consulta="UPDATE regvisita SET estado='2', fechasalida='$fechasalida' WHERE idregvisita='$iduser'";
         if($iduser)
         {
-            DB::connection('mysql')->update($consulta);
+            DB::connection('pgsql_pag')->update($consulta);
             $this->emit('dnisalida');
         }
         else{

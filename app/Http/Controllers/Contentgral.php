@@ -35,7 +35,7 @@ class Contentgral extends Controller {
 
 		// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
 		$iduser=Auth::user()->id;
-		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->get();
+		$accesoweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->get();
 		$idpaginaweb = $accesoweb[0]->iddirecciones_web;
 
 		//$imagen1 = $request->file('imagen1')->store('public/notas-prensa');
@@ -74,7 +74,7 @@ class Contentgral extends Controller {
 		//$fecha = date_format($datos["fecha"], "Y-m-d H:i:s"); // date("Y-m-d H:i:s", strtotime());
 		$fecha = date('Y-m-d H:i:s');
 
-		DB::connection('mysql')->insert('insert into noticias(titulo,contenido,img1,img2,img3,fechapubli,iddirecciones_web,idcategoria,iduser) values(?,?,?,?,?,?,?,?,?)', [$datos["publicacion"], $contenido, $imagen1, $imagen2, $imagen3, $fecha, $idpaginaweb,$categoria,$iduser]);
+		DB::connection('pgsql_pag')->insert('insert into noticias(titulo,contenido,img1,img2,img3,fechapubli,iddirecciones_web,idcategoria,iduser) values(?,?,?,?,?,?,?,?,?)', [$datos["publicacion"], $contenido, $imagen1, $imagen2, $imagen3, $fecha, $idpaginaweb,$categoria,$iduser]);
 
 		//return $datos;
 		session()->flash('newpublicacion', 'Fue creado nueva publicación');
@@ -84,10 +84,10 @@ class Contentgral extends Controller {
 	public function newpublicaciones() 
 	{	// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
 		$iduser=Auth::user()->id;
-		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->get();
+		$accesoweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->get();
 		$idpaginaweb = $accesoweb[0]->iddirecciones_web;
 
-		$categoria = DB::connection('mysql')->table('categoria')->where('iddirecciones_web',$idpaginaweb)->OrderBy('nomcategoia', 'asc')->get();
+		$categoria = DB::connection('pgsql_pag')->table('categoria')->where('iddirecciones_web',$idpaginaweb)->OrderBy('nomcategoia', 'asc')->get();
 		return view('newpublicaciones', compact('categoria'));
 	}
 	public function formeditapublicaciones(Request $request) {
@@ -95,7 +95,7 @@ class Contentgral extends Controller {
 		// $idpaginaweb=auth()->user()->iddirecciones_web;
 		// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
 		$iduser=Auth::user()->id;
-		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->get();
+		$accesoweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->get();
 		$idpaginaweb = $accesoweb[0]->iddirecciones_web;
 
 		$ima1 = $request->file('imagen1');
@@ -134,7 +134,7 @@ class Contentgral extends Controller {
 			$sql .= ", img3='$imagen3'";}
 
 		$sqlimagen = "UPDATE noticias SET titulo='$titulo', contenido='$cont' " . $sql . " WHERE idnoticias=$idnot";
-		DB::connection('mysql')->UPDATE($sqlimagen);
+		DB::connection('pgsql_pag')->UPDATE($sqlimagen);
 		//echo $sqlimagen;
 
 		session()->flash('success', 'Fue actualizado la publiación');
@@ -146,29 +146,29 @@ class Contentgral extends Controller {
 	{
 		// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
 		$iduser=Auth::user()->id;
-		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->get();
+		$accesoweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->get();
 		$idpaginaweb = $accesoweb[0]->iddirecciones_web;
 
-		$datosnot = DB::connection('mysql')->table('noticias')->where('iddirecciones_web',$idpaginaweb)->OrderBy('idnoticias', 'desc')->paginate(10);
+		$datosnot = DB::connection('pgsql_pag')->table('noticias')->where('iddirecciones_web',$idpaginaweb)->OrderBy('idnoticias', 'desc')->paginate(10);
 		return view('publicacion', compact('datosnot'));
 	}
 
 	public function verpublicacion($id) {
-		$dato = DB::connection('mysql')->table('noticias')->where('idnoticias', $id)->get();
+		$dato = DB::connection('pgsql_pag')->table('noticias')->where('idnoticias', $id)->get();
 		return view('verpublicacion', compact('dato'));
 	}
 
 	public function editarpublicacion($id) {
-		$dato = DB::connection('mysql')->table('noticias')->where('idnoticias', $id)->get();
+		$dato = DB::connection('pgsql_pag')->table('noticias')->where('idnoticias', $id)->get();
 
 		// $idweb=auth()->user()->iddirecciones_web;
 
 		// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
 		$iduser=Auth::user()->id;
-		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->get();
+		$accesoweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->get();
 		$idweb = $accesoweb[0]->iddirecciones_web;
 
-		$categoria = DB::connection('mysql')->table('categoria')->where('iddirecciones_web',$idweb)->OrderBy('nomcategoia', 'asc')->get();
+		$categoria = DB::connection('pgsql_pag')->table('categoria')->where('iddirecciones_web',$idweb)->OrderBy('nomcategoia', 'asc')->get();
 
 		return view('editarpublicacion', compact('dato','categoria'));
 	}
@@ -176,7 +176,7 @@ class Contentgral extends Controller {
 	public function eliminarpublicacion($id)
 	{
 		$sql="DELETE FROM noticias where idnoticias=$id";
-		DB::connection('mysql')->delete($sql);
+		DB::connection('pgsql_pag')->delete($sql);
 		session()->flash('elimnadoreg', 'Fue eliminado la publiación');
 		return back()->withInput();
 	}
@@ -184,12 +184,12 @@ class Contentgral extends Controller {
 	public function menus() {
 		// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
 		$iduser=Auth::user()->id;
-		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->get();
+		$accesoweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->get();
 		$idweb = $accesoweb[0]->iddirecciones_web;
 
-		$datospag = DB::connection('mysql')->table('pagina')->where('iddirecciones_web',$idweb)->OrderBy('id_pagina', 'desc')->get();
-		$datosmenu = DB::connection('mysql')->table('menus')->where('iddirecciones_web',$idweb)->get();
-		$datossubmenu = DB::connection('mysql')->table('submenu')->join('menus','submenu.idmenus','=','menus.idmenus')->where('iddirecciones_web',$idweb)->get();
+		$datospag = DB::connection('pgsql_pag')->table('pagina')->where('iddirecciones_web',$idweb)->OrderBy('id_pagina', 'desc')->get();
+		$datosmenu = DB::connection('pgsql_pag')->table('menus')->where('iddirecciones_web',$idweb)->get();
+		$datossubmenu = DB::connection('pgsql_pag')->table('submenu')->join('menus','submenu.idmenus','=','menus.idmenus')->where('iddirecciones_web',$idweb)->get();
 		return view('menus',compact('datospag','datosmenu','datossubmenu'));
 	}
 	public function formregmenu(Request $request)
@@ -198,7 +198,7 @@ class Contentgral extends Controller {
 		
 		// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
 		$iduser=Auth::user()->id;
-		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->get();
+		$accesoweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->get();
 		$idweb = $accesoweb[0]->iddirecciones_web;
 
 		$nombre=$datos["nomdireccion"];
@@ -225,7 +225,7 @@ class Contentgral extends Controller {
 			}
 		}
 		$fecha = date('Y-m-d H:i:s');
-		DB::connection('mysql')->insert('insert into menus (nom_menu,link_menu,id_pagina,iddirecciones_web,created_at) values (?, ?,?,?,?)', [$nombre,$enlacesi,$idpagina,$idweb,$fecha]);
+		DB::connection('pgsql_pag')->insert('insert into menus (nom_menu,link_menu,id_pagina,iddirecciones_web,created_at) values (?, ?,?,?,?)', [$nombre,$enlacesi,$idpagina,$idweb,$fecha]);
 
 
 		session()->flash('newmenu', 'Fue creado un menú nuevo');
@@ -235,12 +235,12 @@ class Contentgral extends Controller {
 	{
 		// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
 		$iduser=Auth::user()->id;
-		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->get();
+		$accesoweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->get();
 		$idweb = $accesoweb[0]->iddirecciones_web;
 
 
 		$sql="UPDATE menus SET activo_menu=1 WHERE (idmenus=$id and iddirecciones_web=$idweb)";
-		DB::connection('mysql')->update($sql);
+		DB::connection('pgsql_pag')->update($sql);
 		session()->flash('activarmenu', 'Fue activado el menu');
 		return back()->withInput();
 	}
@@ -248,11 +248,11 @@ class Contentgral extends Controller {
 	{
 		// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
 		$iduser=Auth::user()->id;
-		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->get();
+		$accesoweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->get();
 		$idweb = $accesoweb[0]->iddirecciones_web;
 
 		$sql="UPDATE menus SET activo_menu=0 WHERE (idmenus=$id and iddirecciones_web=$idweb)";
-		DB::connection('mysql')->update($sql);
+		DB::connection('pgsql_pag')->update($sql);
 		session()->flash('desactivarmenu', 'Fue desactivado el menu');
 		return back()->withInput();
 	}
@@ -277,7 +277,7 @@ class Contentgral extends Controller {
 		}
 
 		$fecha = date('Y-m-d H:i:s');
-		DB::connection('mysql')->insert('insert into submenu (nom_submenu,link_submenu,idpagina,idmenus,created_at) values (?, ?,?,?,?)', [$nombre,$enlacesi,$idpaginaparasub,$idmenu,$fecha ]);
+		DB::connection('pgsql_pag')->insert('insert into submenu (nom_submenu,link_submenu,idpagina,idmenus,created_at) values (?, ?,?,?,?)', [$nombre,$enlacesi,$idpaginaparasub,$idmenu,$fecha ]);
 
 		session()->flash('newsubmenu', 'Fue creado nuevo sub menú');
 		return back()->withInput();
@@ -288,7 +288,7 @@ class Contentgral extends Controller {
 	{
 
 		$sql="UPDATE submenu SET activo_submenu=1 WHERE (idsubmenu=$id)";
-		DB::connection('mysql')->update($sql);
+		DB::connection('pgsql_pag')->update($sql);
 		session()->flash('activarmenusub', 'Fue activado el submenu');
 		return back()->withInput();
 	}
@@ -296,14 +296,14 @@ class Contentgral extends Controller {
 	{
 
 		$sql="UPDATE submenu SET activo_submenu=0 WHERE (idsubmenu=$id)";
-		DB::connection('mysql')->update($sql);
+		DB::connection('pgsql_pag')->update($sql);
 		session()->flash('desactivarmenusub', 'Fue desactivado el submenu');
 		return back()->withInput();
 	}
 
 	public function datoeditarmenu($id)
 	{
-		$datos=DB::connection('mysql')->table('menus')->where('idmenus',$id)->get();
+		$datos=DB::connection('pgsql_pag')->table('menus')->where('idmenus',$id)->get();
 		return $datos;
 	}
 	public function formregmenuedit(Request $request)
@@ -337,7 +337,7 @@ class Contentgral extends Controller {
 
 		$sql="UPDATE menus SET nom_menu='$nombre',link_menu='$enlacesi',id_pagina='$idpagina',updated_at='$fecha ' WHERE idmenus=$idmenu";
 		
-		DB::connection('mysql')->update($sql);
+		DB::connection('pgsql_pag')->update($sql);
 
 		session()->flash('updmenu', 'Fue actualizado el menu principal');
 		return back()->withInput();
@@ -346,7 +346,7 @@ class Contentgral extends Controller {
 	
 	public function datoeditarsubmenu($id)
 	{
-		$datos=DB::connection('mysql')->table('submenu')->where('idsubmenu',$id)->get();
+		$datos=DB::connection('pgsql_pag')->table('submenu')->where('idsubmenu',$id)->get();
 		return $datos;
 	}
 	public function formregsubmenuedit(Request $request)
@@ -373,7 +373,7 @@ class Contentgral extends Controller {
 		
 		$sql="UPDATE submenu SET nom_submenu='$nombre',link_submenu='$enlacesi',idpagina='$idpaginaparasub',idmenus='$idmenu',updated_at='$fecha'  WHERE idsubmenu=$idsubmenu";
 		
-		DB::connection('mysql')->update($sql);
+		DB::connection('pgsql_pag')->update($sql);
 		session()->flash('editsubmenu', 'Fue actualizado el submenu');
 		return back()->withInput();
 
@@ -384,19 +384,19 @@ class Contentgral extends Controller {
 	{	
 		// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
 		$iduser=Auth::user()->id;
-		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->get();
+		$accesoweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->get();
 		$idweb = $accesoweb[0]->iddirecciones_web;
 
-		$datospag = DB::connection('mysql')->table('pagina')->where('iddirecciones_web',$idweb)->OrderBy('id_pagina', 'desc')->paginate(10);
+		$datospag = DB::connection('pgsql_pag')->table('pagina')->where('iddirecciones_web',$idweb)->OrderBy('id_pagina', 'desc')->paginate(10);
 
-		$dirweb=DB::connection('mysql')->table('direcciones_web')->where('iddirecciones_web',$idweb)->get();
+		$dirweb=DB::connection('pgsql_pag')->table('direcciones_web')->where('iddirecciones_web',$idweb)->get();
 		$dirul=@$dirweb[0]->dns_direcciones_web;
 
 		return view('modulopagina', compact('datospag','dirul'));
 	}
 	public function verpagina($id)
 	{	
-		$dato=DB::connection('mysql')->table('pagina')->where('id_pagina',$id)->get();
+		$dato=DB::connection('pgsql_pag')->table('pagina')->where('id_pagina',$id)->get();
 		return view('verpagina',compact('dato'));
 	}
 	public function updatepagina(Request $request)
@@ -407,7 +407,7 @@ class Contentgral extends Controller {
 		$content=$datos["contenido"];
 		$titulo=$datos["publicacion"];
 		$sql="UPDATE pagina SET nom_pagina='$titulo',cont_pagina='$content' WHERE id_pagina=$id";
-		DB::connection('mysql')->update($sql);
+		DB::connection('pgsql_pag')->update($sql);
 
 		session()->flash('success', 'Fue actualizado con exito');
 		return back()->withInput();
@@ -416,7 +416,7 @@ class Contentgral extends Controller {
 	public function desactivapubli($id)
 	{
 		$sql="UPDATE noticias SET activo=0 WHERE idnoticias=$id";
-		DB::connection('mysql')->update($sql);
+		DB::connection('pgsql_pag')->update($sql);
 
 		session()->flash('desactivanot', 'Fue desactivado la publicaccion con exito');
 		return back()->withInput();
@@ -425,7 +425,7 @@ class Contentgral extends Controller {
 	public function activapubli($id)
 	{
 		$sql="UPDATE noticias SET activo=1 WHERE idnoticias=$id";
-		DB::connection('mysql')->update($sql);
+		DB::connection('pgsql_pag')->update($sql);
 
 		session()->flash('activanot', 'Fue activado la publicaccion con exito');
 		return back()->withInput();
@@ -433,10 +433,10 @@ class Contentgral extends Controller {
 
 	public function categoria()
 	{	$iduser=Auth::user()->id;
-		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->get();
+		$accesoweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->get();
 		$idpaginaweb = $accesoweb[0]->iddirecciones_web;
 
-		$datos=DB::connection('mysql')->table('categoria')->where('iddirecciones_web',$idpaginaweb)->get();
+		$datos=DB::connection('pgsql_pag')->table('categoria')->where('iddirecciones_web',$idpaginaweb)->get();
 		return view('categoria',compact('datos'));
 	}
 	// agregramos la nueva categoria
@@ -446,12 +446,12 @@ class Contentgral extends Controller {
 
 		// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
 		$iduser=Auth::user()->id;
-		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->get();
+		$accesoweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->get();
 		$idpaginaweb = $accesoweb[0]->iddirecciones_web;
 
 
 		$fecha=date('Y-m-d H:i:s');
-		$resultado=DB::connection('mysql')->insert('insert into categoria(nomcategoia,iddirecciones_web,created_at,updated_at)values(?,?,?,?)',[$datos['nomdireccion'],$idpaginaweb,$fecha,$fecha]);
+		$resultado=DB::connection('pgsql_pag')->insert('insert into categoria(nomcategoia,iddirecciones_web,created_at,updated_at)values(?,?,?,?)',[$datos['nomdireccion'],$idpaginaweb,$fecha,$fecha]);
 
 		session()->flash('success', 'Fue agregado con exito');
 		return back()->withInput();
@@ -460,10 +460,10 @@ class Contentgral extends Controller {
 	public function tags()
 	{
 		$iduser=Auth::user()->id;
-		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->get();
+		$accesoweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->get();
 		$idweb = $accesoweb[0]->iddirecciones_web;
 
-		$datos=DB::connection('mysql')->table('tags')->where('iddirecciones_web',$idweb)->get();
+		$datos=DB::connection('pgsql_pag')->table('tags')->where('iddirecciones_web',$idweb)->get();
 
 		return view('tags',compact('datos'));
 	}
@@ -471,12 +471,12 @@ class Contentgral extends Controller {
 	{
 		// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
 		$iduser=Auth::user()->id;
-		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->get();
+		$accesoweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->get();
 		$idweb = $accesoweb[0]->iddirecciones_web;
 
 		$datos = $request->all();
 		$fecha=date('Y-m-d H:i:s');
-		DB::connection('mysql')->insert('insert into tags (nom_tags,iddirecciones_web,created_at) values (?, ?,?)', [$datos['nomtags'],$idweb,$fecha]);
+		DB::connection('pgsql_pag')->insert('insert into tags (nom_tags,iddirecciones_web,created_at) values (?, ?,?)', [$datos['nomtags'],$idweb,$fecha]);
 
 		session()->flash('success', 'Fue agregado nueva ventana emergente');
 		return back()->withInput();
@@ -485,10 +485,10 @@ class Contentgral extends Controller {
 	public function popup()
 	{	// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
 		$iduser=Auth::user()->id;
-		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
+		$accesoweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
 		$idweb = $accesoweb;//$accesoweb[0]->iddirecciones_web;
 
-		$datopop=DB::connection('mysql')->table('popup')->where('iddirecciones_web',$idweb)->orderBy('idpopup','DESC')->paginate(10);
+		$datopop=DB::connection('pgsql_pag')->table('popup')->where('iddirecciones_web',$idweb)->orderBy('idpopup','DESC')->paginate(10);
 		return view('popup',compact('datopop'));
 	}
 	public function addrregpopup(Request $request)
@@ -500,14 +500,14 @@ class Contentgral extends Controller {
 		// $iddirweb=$datos['iddirweb'];
 		// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
 		$iduser=Auth::user()->id;
-		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->get();
+		$accesoweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->get();
 		$iddirweb = $accesoweb[0]->iddirecciones_web;
 
 		$titulo=$datos['nombre'];
 		$url=$datos['url'];
 		$fecha = date('Y-m-d H:i:s');
 
-		DB::connection('mysql')->insert('insert into popup (titulopopup,nompopup,enlace_popup,activogral,iddirecciones_web,created_at) values (?, ?,?,?,?,?)', [$titulo,$archivo,$url,1,$iddirweb,$fecha]);
+		DB::connection('pgsql_pag')->insert('insert into popup (titulopopup,nompopup,enlace_popup,activogral,iddirecciones_web,created_at) values (?, ?,?,?,?,?)', [$titulo,$archivo,$url,1,$iddirweb,$fecha]);
 
 		session()->flash('success', 'Fue agregado nueva ventana emergente');
 		return back()->withInput();
@@ -516,20 +516,20 @@ class Contentgral extends Controller {
 	public function desactivapopup($id)
 	{
 		$sql="UPDATE popup SET activogral=0 WHERE idpopup=$id";
-		DB::connection('mysql')->update($sql);
+		DB::connection('pgsql_pag')->update($sql);
 		session()->flash('desactivapopup', 'Fue desactivado la publicación');
 		return back()->withInput();
 	}
 	public function activapopup($id)
 	{
 		$sql="UPDATE popup SET activogral=1 WHERE idpopup=$id";
-		DB::connection('mysql')->update($sql);
+		DB::connection('pgsql_pag')->update($sql);
 		session()->flash('activapopup', 'Fue activado la publicación');
 		return back()->withInput();
 	}
 	public function datopopup($id)
 	{
-		$datos=DB::connection('mysql')->table('popup')->where('idpopup',$id)->get();
+		$datos=DB::connection('pgsql_pag')->table('popup')->where('idpopup',$id)->get();
 		return $datos;
 	}
 	public function editpopup(Request $request)
@@ -550,7 +550,7 @@ class Contentgral extends Controller {
 		$ippop=$datos["idpopup"];
 		$sql="UPDATE popup set titulopopup='$titulo'".$image.", enlace_popup='$url' where idpopup=$ippop";
 
-		DB::connection('mysql')->update($sql);
+		DB::connection('pgsql_pag')->update($sql);
 
 		session()->flash('updatepopup', 'Fue actualizado el anuncio emergente');
 		return back()->withInput();
@@ -560,9 +560,9 @@ class Contentgral extends Controller {
 	{
 		// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
 		$iduser=Auth::user()->id;
-		$idweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
+		$idweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
 
-		$datoslider=DB::connection('mysql')->table('slider')->where('iddirecciones_web',$idweb)->orderBy('idslider','DESC')->paginate(10);
+		$datoslider=DB::connection('pgsql_pag')->table('slider')->where('iddirecciones_web',$idweb)->orderBy('idslider','DESC')->paginate(10);
 		return view('slider',compact('datoslider'));
 	}
 
@@ -575,13 +575,13 @@ class Contentgral extends Controller {
 		// $iddirweb=$datos['iddirweb'];
 		// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
 		$iduser=Auth::user()->id;
-		$iddirweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
+		$iddirweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
 		//$iddirweb = $accesoweb[0]->iddirecciones_web;
 
 
 		$fecha = date('Y-m-d H:i:s');
 
-		DB::connection('mysql')->insert('insert into slider (img_slider,activo_slider,iddirecciones_web,created_at) values (?, ?,?,?)', [$archivo,1,$iddirweb,$fecha]);
+		DB::connection('pgsql_pag')->insert('insert into slider (img_slider,activo_slider,iddirecciones_web,created_at) values (?, ?,?,?)', [$archivo,1,$iddirweb,$fecha]);
 
 		session()->flash('success', 'Fue agregado nueva imagen slider');
 		return back()->withInput();
@@ -589,7 +589,7 @@ class Contentgral extends Controller {
 	}
 	public function datoslider($id)
 	{
-		$datos=DB::connection('mysql')->table('slider')->where('idslider',$id)->get();
+		$datos=DB::connection('pgsql_pag')->table('slider')->where('idslider',$id)->get();
 		return $datos;
 	}
 
@@ -611,7 +611,7 @@ class Contentgral extends Controller {
 		$ippop=$datos["idslider"];
 		$sql="UPDATE slider set ".$image." where idslider=$ippop";
 
-		DB::connection('mysql')->update($sql);
+		DB::connection('pgsql_pag')->update($sql);
 
 		session()->flash('updatepopup', 'Fue actualizado el slider');
 		return back()->withInput();
@@ -620,14 +620,14 @@ class Contentgral extends Controller {
 	public function desactivaslider($id)
 	{
 		$sql="UPDATE slider SET activo_slider=0 WHERE idslider=$id";
-		DB::connection('mysql')->update($sql);
+		DB::connection('pgsql_pag')->update($sql);
 		session()->flash('desactivapopup', 'Fue desactivado el slider');
 		return back()->withInput();
 	}
 	public function activaslider($id)
 	{
 		$sql="UPDATE slider SET activo_slider=1 WHERE idslider=$id";
-		DB::connection('mysql')->update($sql);
+		DB::connection('pgsql_pag')->update($sql);
 		session()->flash('activapopup', 'Fue activado el slider');
 		return back()->withInput();
 	}
@@ -637,10 +637,10 @@ class Contentgral extends Controller {
 	{
 		// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
 		$iduser=Auth::user()->id;
-		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
+		$accesoweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
 		$idweb = $accesoweb;//$accesoweb[0]->iddirecciones_web;
 
-		$dato=DB::connection('mysql')->table('secciones')->where('iddirecciones_web',$idweb)->orderBy('seccion_pag','asc')->paginate(10);
+		$dato=DB::connection('pgsql_pag')->table('secciones')->where('iddirecciones_web',$idweb)->orderBy('seccion_pag','asc')->paginate(10);
 		return view('seccion',compact('dato'));
 	}
 	public function addregseccion(Request $request)
@@ -649,7 +649,7 @@ class Contentgral extends Controller {
 		// $idweb=$datos['iddirweb'];
 		// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
 		$iduser=Auth::user()->id;
-		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->get();
+		$accesoweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->get();
 		$idweb = $accesoweb[0]->iddirecciones_web;
 
 		$seccion=$datos['seccion'];
@@ -664,7 +664,7 @@ class Contentgral extends Controller {
 		if($imagen){$archivo = $request->file('imgseccion')->store('public/seccion');}
 		else{$archivo="";}
 
-		DB::connection('mysql')->insert('insert into secciones (titulo,texto_enlace,icono,color,enlace,apartado,archivo_imagen,seccion_pag,iddirecciones_web,created_at) values (?, ?,?,?,?,?,?,?,?,?)', [$titulo,$texto_enlace,$icono,$color,$Url,$apartado,$archivo,$seccion,$idweb,$fecha]);
+		DB::connection('pgsql_pag')->insert('insert into secciones (titulo,texto_enlace,icono,color,enlace,apartado,archivo_imagen,seccion_pag,iddirecciones_web,created_at) values (?, ?,?,?,?,?,?,?,?,?)', [$titulo,$texto_enlace,$icono,$color,$Url,$apartado,$archivo,$seccion,$idweb,$fecha]);
 		//return $datos;
 		session()->flash('success', 'Fue agregado nueva ventana emergente');
 		return back()->withInput();
@@ -673,7 +673,7 @@ class Contentgral extends Controller {
 	public function desactivaseccion($id)
 	{
 		$sql="UPDATE secciones SET activo=0 WHERE idseccion=$id";
-		DB::connection('mysql')->update($sql);
+		DB::connection('pgsql_pag')->update($sql);
 
 		session()->flash('desactivadoseccion', 'Fue desactivado la sección con exito');
 		return back()->withInput();
@@ -682,7 +682,7 @@ class Contentgral extends Controller {
 	public function activaseccion($id)
 	{
 		$sql="UPDATE secciones SET activo=1 WHERE idseccion=$id";
-		DB::connection('mysql')->update($sql);
+		DB::connection('pgsql_pag')->update($sql);
 
 		session()->flash('activadoseccion', 'Fue activado la sección con exito');
 		return back()->withInput();
@@ -690,14 +690,14 @@ class Contentgral extends Controller {
 	public function elimnaseccion($id)
 	{
 		$sql="delete from secciones where idseccion=$id";
-		DB::connection('mysql')->delete($sql);
+		DB::connection('pgsql_pag')->delete($sql);
 		session()->flash('elimnaseccion', 'Fue eliminado la sección con exito');
 		return back()->withInput();
 	}
 
 	public function editasecciones($id)
 	{
-		$datos=DB::connection('mysql')->table('secciones')->where('idseccion',$id)->get();
+		$datos=DB::connection('pgsql_pag')->table('secciones')->where('idseccion',$id)->get();
 		return $datos;
 	}
 	public function updregseccion(Request $request)
@@ -720,7 +720,7 @@ class Contentgral extends Controller {
 			$sql="UPDATE secciones SET titulo='$titulo',texto_enlace='$text_enlace',icono='$icono',color='$color',enlace='$url',updated_at='$fecha',apartado='$apartado' WHERE idseccion=$id";
 		}
 
-		DB::connection('mysql')->update($sql);
+		DB::connection('pgsql_pag')->update($sql);
 
 		session()->flash('Actualizadosec', 'Fue actualizado la sección con exito');
 		return back()->withInput();
@@ -738,7 +738,7 @@ class Contentgral extends Controller {
 
 		// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
 		$iduser=Auth::user()->id;
-		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->get();
+		$accesoweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->get();
 		$idwev = $accesoweb[0]->iddirecciones_web;
 		
 		$nompagina=$datos["nompagina"];
@@ -750,7 +750,7 @@ class Contentgral extends Controller {
 
 		$fecha =date('Y-m-d H:i:s');
 
-		DB::connection('mysql')->insert('insert into pagina (nom_pagina,cont_pagina,fecha_pag,iddirecciones_web,iduser) values (?, ?,?,?,?)', [$nompagina,$contenido,$fecha,$idwev,$idusers]);
+		DB::connection('pgsql_pag')->insert('insert into pagina (nom_pagina,cont_pagina,fecha_pag,iddirecciones_web,iduser) values (?, ?,?,?,?)', [$nompagina,$contenido,$fecha,$idwev,$idusers]);
 
 		session()->flash('nuevapagina', 'Fue agregado nueva pagina');
 		return back()->withInput();
@@ -759,7 +759,7 @@ class Contentgral extends Controller {
 
 	public function editarpag($id)
 	{
-		$dato=DB::connection('mysql')->table('pagina')->where('id_pagina',$id)->get();
+		$dato=DB::connection('pgsql_pag')->table('pagina')->where('id_pagina',$id)->get();
 
 		 // ponemos la regla de permisos
 		 if(Auth::user()->can('gp_pagina_editar'))
@@ -779,7 +779,7 @@ class Contentgral extends Controller {
 		// ponemos la regla de permisos
 		if(Auth::user()->can('gp_pagina_editar'))
 		{
-			DB::connection('mysql')->delete($sql);
+			DB::connection('pgsql_pag')->delete($sql);
 			session()->flash('eliminadopag', 'Fue Elimnado la página');
 			return back()->withInput();
 		}
@@ -791,7 +791,7 @@ class Contentgral extends Controller {
 	}
 
 	public function registropagina() {
-		$datos = DB::connection('mysql')->table('direcciones_web')->OrderBy('iddirecciones_web', 'desc')->paginate(15);
+		$datos = DB::connection('pgsql_pag')->table('direcciones_web')->OrderBy('iddirecciones_web', 'desc')->paginate(15);
 
 		$dependencia=DB::table('dependencia')->select('depe_depende')->where(['depe_estado'=>'1','depe_tipo'=>'1'])->groupBy('depe_depende')->orderBy('depe_depende','ASC')->get();
         
@@ -809,7 +809,7 @@ class Contentgral extends Controller {
 
 	public function formregistropagina(Request $request) {
 		$datos = $request->all();
-		DB::connection('mysql')->insert('insert into direcciones_web (nom_direcciones_web,linkdirecciones_web,dns_direcciones_web) values (?,?,?)', [$datos["nomdireccion"], $datos["dominioext"], $datos["dominiogore"]]);
+		DB::connection('pgsql_pag')->insert('insert into direcciones_web (nom_direcciones_web,linkdirecciones_web,dns_direcciones_web) values (?,?,?)', [$datos["nomdireccion"], $datos["dominioext"], $datos["dominiogore"]]);
 		// return response()->json($datos);
 
 		//return $datos;
@@ -819,10 +819,10 @@ class Contentgral extends Controller {
 	{	
 		// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
 		$iduser=Auth::user()->id;
-		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->get();
+		$accesoweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->get();
 		$idweb = $accesoweb[0]->iddirecciones_web;
 
-		$datos=DB::connection('mysql')->table('tema_portal')->where('iddirecciones_web',$idweb)->get();
+		$datos=DB::connection('pgsql_pag')->table('tema_portal')->where('iddirecciones_web',$idweb)->get();
 		return view('tema',compact('datos'));
 	}
 	public function addtema(Request $request)
@@ -831,7 +831,7 @@ class Contentgral extends Controller {
 		// $idweb=$datos["iddirweb"];
 		// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
 		$iduser=Auth::user()->id;
-		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->get();
+		$accesoweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->get();
 		$idweb = $accesoweb[0]->iddirecciones_web;
 
 		$nomtema=$datos["nomtema"];
@@ -850,7 +850,7 @@ class Contentgral extends Controller {
 		$linkfacebook=$datos["linkfacebook"];
 		$fecha=date('Y-m-d H:i:s');
 
-		DB::connection('mysql')->insert('insert into tema_portal (nom_tema,color_tema,logo_tema,top_email,top_fono,top_correocorp,top_transparencia,top_mesapartesvirtual,footer_f1,footer_f2,footer_f3,redes_sociales,iddirecciones_web,created_at,linkpag_facebook) values (?, ?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [$nomtema,$colortema,$logo,$correoatencion,$tel_atencion,$correocoporativo,$urltrasnpararencia,$linkmesapartes,$foote_1,$foote_2,$foote_3,$foote_4,$idweb,$fecha,$linkfacebook]);
+		DB::connection('pgsql_pag')->insert('insert into tema_portal (nom_tema,color_tema,logo_tema,top_email,top_fono,top_correocorp,top_transparencia,top_mesapartesvirtual,footer_f1,footer_f2,footer_f3,redes_sociales,iddirecciones_web,created_at,linkpag_facebook) values (?, ?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [$nomtema,$colortema,$logo,$correoatencion,$tel_atencion,$correocoporativo,$urltrasnpararencia,$linkmesapartes,$foote_1,$foote_2,$foote_3,$foote_4,$idweb,$fecha,$linkfacebook]);
 
 		session()->flash('newtema', 'Fue creado nuevo tema');
 		return back()->withInput();
@@ -910,7 +910,7 @@ class Contentgral extends Controller {
 
 		
 		
-		DB::connection('mysql')->update($sql);
+		DB::connection('pgsql_pag')->update($sql);
 		
 
 		session()->flash('updtema', 'El tema fue actualizado');
@@ -928,27 +928,27 @@ class Contentgral extends Controller {
 		if ($datos['pass'] != '') {
 			$clave = Hash::make($datos['pass']);
 			$sql = "UPDATE users SET password='" . $clave . "' WHERE id=" . $id;
-			$resultado = DB::connection('mysql')->UPDATE($sql);
+			$resultado = DB::connection('pgsql_pag')->UPDATE($sql);
 		}
 
 		//return $datos;
 		return redirect('/administrador/registrousuarios');
 	}
 	public function registrousuarios() {
-		$datosuser = DB::connection('mysql')->table('userportales')->OrderBy('id', 'asc')->paginate(15);
-		$roles=DB::connection('mysql')->table('roles')->get();
-		$paginasweb=DB::connection('mysql')->table('direcciones_web')->get();
+		$datosuser = DB::connection('pgsql_pag')->table('userportales')->OrderBy('id', 'asc')->paginate(15);
+		$roles=DB::connection('pgsql_pag')->table('roles')->get();
+		$paginasweb=DB::connection('pgsql_pag')->table('direcciones_web')->get();
 		return view('usuarios', compact('datosuser','roles','paginasweb'));
 	}
 	// para jalar datos en formato y pasarlo a ajax
 	public function datosuser($id) {
-		$databucado = DB::connection('mysql')->table('users')->where('id', $id)->get();
+		$databucado = DB::connection('pgsql_pag')->table('users')->where('id', $id)->get();
 		return $databucado;
 	}
 	// para comprobar la existencia correos
 	public function compruebacorreo($id)
 	{
-		$databucado = DB::connection('mysql')->table('users')->where('email',$id)->get();
+		$databucado = DB::connection('pgsql_pag')->table('users')->where('email',$id)->get();
 		if(count($databucado)){
 			$texto="Ya existe un correo similar";
 		}
@@ -958,7 +958,7 @@ class Contentgral extends Controller {
 	// para comprobar la existencia de username
 	public function compruebausuario($id)
 	{
-		$databucado = DB::connection('mysql')->table('users')->where('username',$id)->get();
+		$databucado = DB::connection('pgsql_pag')->table('users')->where('username',$id)->get();
 		if(count($databucado)){
 			$texto="Ya existe el username similar";
 		}
@@ -979,7 +979,7 @@ class Contentgral extends Controller {
 		else{$imagen="public/avatar/default.png";}
 		
 
-		DB::connection('mysql')->insert('insert into users (name,email,username,password,profile_pic,is_active,rol,iddirecciones_web,created_at,updated_at) values (?, ?,?,?,?,?,?,?,?,?)', [$nombres,$email,$usuarionew,$clave,$imagen,1,$rol,$dirweb,$fecha,$fecha]);
+		DB::connection('pgsql_pag')->insert('insert into users (name,email,username,password,profile_pic,is_active,rol,iddirecciones_web,created_at,updated_at) values (?, ?,?,?,?,?,?,?,?,?)', [$nombres,$email,$usuarionew,$clave,$imagen,1,$rol,$dirweb,$fecha,$fecha]);
 
 		session()->flash('newuser', 'Fue creado nuevo usuario');
 		return back()->withInput();
@@ -988,7 +988,7 @@ class Contentgral extends Controller {
 	public function eliminauser($id)
 	{
 		$sql="DELETE FROM users where id=".$id;
-		DB::connection('mysql')->delete($sql);
+		DB::connection('pgsql_pag')->delete($sql);
 		session()->flash('danger', 'Fue eliminado el usuario');
 		return back()->withInput();
 	}
@@ -998,10 +998,10 @@ class Contentgral extends Controller {
 	public function enlaceref()
 	{	// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
 		$iduser=Auth::user()->id;
-		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->get();
+		$accesoweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->get();
 		$idweb = $accesoweb[0]->iddirecciones_web;
 
-		$enlaceref=DB::connection('mysql')->table('enlacerefe')->where('iddirecciones_web',$idweb)->paginate(10);
+		$enlaceref=DB::connection('pgsql_pag')->table('enlacerefe')->where('iddirecciones_web',$idweb)->paginate(10);
 		
 		return view('enlaceref',compact('enlaceref'));
 	}
@@ -1012,7 +1012,7 @@ class Contentgral extends Controller {
 
 		// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
 		$iduser=Auth::user()->id;
-		$accesoweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->get();
+		$accesoweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->get();
 		$iddirweb = $accesoweb[0]->iddirecciones_web;
 
 		$entidad=$datos["entidad"];
@@ -1021,7 +1021,7 @@ class Contentgral extends Controller {
 
 		$imagen=$request->file('imagen')->store('public/enlaceref');
 
-		DB::connection('mysql')->insert('insert into enlacerefe (img_refe,link_refe,iddirecciones_web,created_at,entidad_ref) values (?, ?,?,?,?)', [$imagen,$url,$iddirweb,$fecha,$entidad]);
+		DB::connection('pgsql_pag')->insert('insert into enlacerefe (img_refe,link_refe,iddirecciones_web,created_at,entidad_ref) values (?, ?,?,?,?)', [$imagen,$url,$iddirweb,$fecha,$entidad]);
 
 		
 		session()->flash('newenlaceref', 'Fue creado el enlace referencial :'.$entidad);
@@ -1031,7 +1031,7 @@ class Contentgral extends Controller {
 	public function desactivarefe($id)
 	{
 		$sql="UPDATE enlacerefe SET activo_refe=0 WHERE idenlacerefe=$id";
-		DB::connection('mysql')->update($sql);
+		DB::connection('pgsql_pag')->update($sql);
 
 		session()->flash('desactivarefe', 'Fue desactivado la referencia con exito');
 		return back()->withInput();
@@ -1039,7 +1039,7 @@ class Contentgral extends Controller {
 	public function activarefe ($id)
 	{
 		$sql="UPDATE enlacerefe SET activo_refe=1 WHERE idenlacerefe=$id";
-		DB::connection('mysql')->update($sql);
+		DB::connection('pgsql_pag')->update($sql);
 
 		session()->flash('activarefe', 'Fue activado la referencia con exito');
 		return back()->withInput();
@@ -1048,7 +1048,7 @@ class Contentgral extends Controller {
 	public function elimnarefe($id)
 	{
 		$sql="DELETE FROM enlacerefe WHERE idenlacerefe=$id";
-		DB::connection('mysql')->update($sql);
+		DB::connection('pgsql_pag')->update($sql);
 		session()->flash('eliminadoref', 'Fue eliminado la referencia con exito');
 		return back()->withInput();
 	}
@@ -1061,19 +1061,19 @@ class Contentgral extends Controller {
 	public function convocatoria()
 	{
 		$iduser=Auth::user()->id;
-		$idweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');// id de pagina web
+		$idweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');// id de pagina web
 
 
-        $dnweb=DB::connection('mysql')->table('direcciones_web')->where('iddirecciones_web',$idweb)->value('dns_direcciones_web');
+        $dnweb=DB::connection('pgsql_pag')->table('direcciones_web')->where('iddirecciones_web',$idweb)->value('dns_direcciones_web');
 
 		// optenemos la relacion de proceso cas
-		$procesocas=DB::connection('mysql')->table('cas_proceso_seleccion')->where('iddireccionweb',$idweb)->orderBy('id_proc_sel_cas','DESC')->paginate(10);
+		$procesocas=DB::connection('pgsql_pag')->table('cas_proceso_seleccion')->where('iddireccionweb',$idweb)->orderBy('id_proc_sel_cas','DESC')->paginate(10);
 		//$idweb = $accesoweb[0]->iddirecciones_web;
 		return view('convocatoria',compact('procesocas','dnweb'));
 	}
 	public function verarchivoscas($id)
 	{
-		$archivoprocesocas=DB::connection('mysql')->table('archivo_sel_cas')->where('id_proceso_selec',$id)->orderBy('idarchivo_sel_cas','DESC')->get();
+		$archivoprocesocas=DB::connection('pgsql_pag')->table('archivo_sel_cas')->where('id_proceso_selec',$id)->orderBy('idarchivo_sel_cas','DESC')->get();
 		
 		return convert_from_latin1_to_utf8_recursively($archivoprocesocas);
 	}
@@ -1085,7 +1085,7 @@ class Contentgral extends Controller {
 		$url=$request->url;
 		$etapa=$request->etapa;
 
-		DB::connection('mysql')->insert('insert into archivo_sel_cas (nom_archivo, url_archivo,etapa,id_proceso_selec) values (?, ?,?,?)', [$nombre,$url,$etapa,$id]);
+		DB::connection('pgsql_pag')->insert('insert into archivo_sel_cas (nom_archivo, url_archivo,etapa,id_proceso_selec) values (?, ?,?,?)', [$nombre,$url,$etapa,$id]);
 		session()->flash('newitemproceso', 'Fue creado nuevo item al proceso');
 		return back()->withInput();
 	}
@@ -1093,14 +1093,14 @@ class Contentgral extends Controller {
 	public function addregprocesocas(Request $request)
 	{
 		$iduser=Auth::user()->id;
-		$idweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');// id de pagina web
+		$idweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');// id de pagina web
 
 		$nomproceso=$request->nomproceso;
 		$inicioinscripcion=$request->inicioinscripcion;
 		$fininscripcion=$request->fininscripcion;
 		$fecharesultado=$request->fecharesultado;
 
-		DB::connection('mysql')->insert('insert into cas_proceso_seleccion (proc_sel_cas_descripcion, proc_sel_cas_fecha_inicio,cas_proc_sel_fecha_fin_inscripcion,proc_sel_cas_fecha_termino,cas_proc_sel_fecha_resultados,cas_proc_sel_estado,iddireccionweb) values (?, ?,?,?,?,?,?)', [$nomproceso,$inicioinscripcion,$fininscripcion,$fecharesultado,$fecharesultado,1,$idweb]);
+		DB::connection('pgsql_pag')->insert('insert into cas_proceso_seleccion (proc_sel_cas_descripcion, proc_sel_cas_fecha_inicio,cas_proc_sel_fecha_fin_inscripcion,proc_sel_cas_fecha_termino,cas_proc_sel_fecha_resultados,cas_proc_sel_estado,iddireccionweb) values (?, ?,?,?,?,?,?)', [$nomproceso,$inicioinscripcion,$fininscripcion,$fecharesultado,$fecharesultado,1,$idweb]);
 
 		session()->flash('newproceso', 'Fue creado nuevo proceso');
 		return back()->withInput();
@@ -1108,7 +1108,7 @@ class Contentgral extends Controller {
 
 	public function verprocesocas($id)
 	{
-		$procesocas=DB::connection('mysql')->table('cas_proceso_seleccion')->where('id_proc_sel_cas',$id)->get();
+		$procesocas=DB::connection('pgsql_pag')->table('cas_proceso_seleccion')->where('id_proc_sel_cas',$id)->get();
 		return convert_from_latin1_to_utf8_recursively($procesocas);
 	}
 
@@ -1120,20 +1120,20 @@ class Contentgral extends Controller {
 		$fininscripcion="'".date('Y-m-d' , strtotime($request->fininscripcions))."'";
 		$fecharesultado="'".date('Y-m-d' , strtotime($request->fecharesultados))."'";
 
-		DB::connection('mysql')->update('update cas_proceso_seleccion set proc_sel_cas_descripcion = '.$nomproceso.',proc_sel_cas_fecha_inicio = '.$inicioinscripcion.',cas_proc_sel_fecha_fin_inscripcion = '.$fininscripcion.',proc_sel_cas_fecha_termino = '.$fecharesultado.',cas_proc_sel_fecha_resultados = '.$fecharesultado.' where id_proc_sel_cas = ?', [$id]);
+		DB::connection('pgsql_pag')->update('update cas_proceso_seleccion set proc_sel_cas_descripcion = '.$nomproceso.',proc_sel_cas_fecha_inicio = '.$inicioinscripcion.',cas_proc_sel_fecha_fin_inscripcion = '.$fininscripcion.',proc_sel_cas_fecha_termino = '.$fecharesultado.',cas_proc_sel_fecha_resultados = '.$fecharesultado.' where id_proc_sel_cas = ?', [$id]);
 
 		session()->flash('procesoeditado', 'Fue creado actualizado el proceso');
 		return back()->withInput();
 	}
 	public function eliminaritemproceso($id)
 	{
-		DB::connection('mysql')->table('archivo_sel_cas')->where('idarchivo_sel_cas',$id)->delete();
+		DB::connection('pgsql_pag')->table('archivo_sel_cas')->where('idarchivo_sel_cas',$id)->delete();
 		session()->flash('archivoeliminado', 'Fue eliminado el item del proceso');
 		return back()->withInput();
 	}
 	public function verarchivoitemproceso($id)
 	{
-		$procesocas=DB::connection('mysql')->table('archivo_sel_cas')->where('idarchivo_sel_cas',$id)->get();
+		$procesocas=DB::connection('pgsql_pag')->table('archivo_sel_cas')->where('idarchivo_sel_cas',$id)->get();
 		return convert_from_latin1_to_utf8_recursively($procesocas);
 	}
 	public function frmeditararchivoproceso(Request $request)
@@ -1143,7 +1143,7 @@ class Contentgral extends Controller {
 		$url="'".$request->urls."'";
 		$etapa="'".$request->etapas."'";
 
-		DB::connection('mysql')->update('update archivo_sel_cas set nom_archivo='.$nombre.',url_archivo='.$url.',etapa='.$etapa.' where idarchivo_sel_cas=?',[$id]);
+		DB::connection('pgsql_pag')->update('update archivo_sel_cas set nom_archivo='.$nombre.',url_archivo='.$url.',etapa='.$etapa.' where idarchivo_sel_cas=?',[$id]);
 		session()->flash('archivoselcas', 'Fue creado actualizado el item');
 		return back()->withInput();
 		
@@ -1152,10 +1152,10 @@ class Contentgral extends Controller {
 	public function fag()
 	{
 		$iduser=Auth::user()->id;
-		$idpag=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
+		$idpag=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
 		//$idpaginaweb = $accesoweb[0]->iddirecciones_web;
 
-		$datos=DB::connection('mysql')->table('fag')->where('iddirecciones_web',$idpag)->orderBy('idfag','desc')->paginate(12);
+		$datos=DB::connection('pgsql_pag')->table('fag')->where('iddirecciones_web',$idpag)->orderBy('idfag','desc')->paginate(12);
 		return view('fag',compact('datos'));
 	}
 
@@ -1168,21 +1168,21 @@ class Contentgral extends Controller {
 		// $iddirweb=$datos['iddirweb'];
 		// consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
 		$iduser=Auth::user()->id;
-		$iddirweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
+		$iddirweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
 		//$iddirweb = $accesoweb[0]->iddirecciones_web;
 
 		$fecha=$request->fecha;
 		$mes=date('m' , strtotime($fecha));
 		$ano = date('Y' , strtotime($fecha));
 
-		DB::connection('mysql')->insert('insert into fag (ano,mes,img,iddirecciones_web,created_at,updated_at) values (?, ?,?,?,?,?)', [$ano,$mes,$archivo,$iddirweb,$fecha,$fecha]);
+		DB::connection('pgsql_pag')->insert('insert into fag (ano,mes,img,iddirecciones_web,created_at,updated_at) values (?, ?,?,?,?,?)', [$ano,$mes,$archivo,$iddirweb,$fecha,$fecha]);
 
 		session()->flash('success', 'Fue agregado nuevo registro de FAG');
 		return back()->withInput();
 	}
 	public function eliminarfag($id)
 	{
-		DB::connection('mysql')->table('fag')->where('idfag',$id)->delete();
+		DB::connection('pgsql_pag')->table('fag')->where('idfag',$id)->delete();
 		session()->flash('archivoeliminado', 'Fue eliminado registro de FAG');
 		return back()->withInput();
 	}

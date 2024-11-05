@@ -14,7 +14,7 @@ class Externopagina extends Controller
      */
     public function index()
     {
-        $listadrw=DB::connection('mysql')->table('direcciones_web')->whereNotNull('dns_direcciones_web')->get();
+        $listadrw=DB::connection('pgsql_pag')->table('direcciones_web')->whereNotNull('dns_direcciones_web')->get();
         
         return view('listadirweb',compact('listadrw'));
         
@@ -25,16 +25,16 @@ class Externopagina extends Controller
         // $from = date('Y-m-d H:i:s',strtotime($request->fecha1));
         // $to = date('Y-m-d H:i:s',strtotime($request->fecha2));
         // $iduser=Auth::user()->id;
-		// $idweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
-        // $consulta=DB::connection('mysql')->table('regvisita')->where('iddirecciones_web',$idweb)->whereBetween('fechaingreso',[$from, $to])->get();
-        // //DB::connection('mysql')->insert('insert into regvisita (id, name) values (?, ?)', [1, 'Dayle']);
+		// $idweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
+        // $consulta=DB::connection('pgsql_pag')->table('regvisita')->where('iddirecciones_web',$idweb)->whereBetween('fechaingreso',[$from, $to])->get();
+        // //DB::connection('pgsql_pag')->insert('insert into regvisita (id, name) values (?, ?)', [1, 'Dayle']);
         // //return $consulta;
 
         // $pdf=\PDF::loadView ('pdfreportevisita',compact('consulta'));
         // return $pdf->stream();
-        $nombredireccion=DB::connection('mysql')->table('direcciones_web')->where('iddirecciones_web',$id)->value('nom_direcciones_web');
+        $nombredireccion=DB::connection('pgsql_pag')->table('direcciones_web')->where('iddirecciones_web',$id)->value('nom_direcciones_web');
 
-        //$consulta=DB::connection('mysql')->table('regvisita')->where('iddirecciones_web',$id)->paginate(10);
+        //$consulta=DB::connection('pgsql_pag')->table('regvisita')->where('iddirecciones_web',$id)->paginate(10);
         return view('listadovisitexterno',compact('id','nombredireccion'));
     }
 

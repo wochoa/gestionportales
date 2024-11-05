@@ -24,8 +24,14 @@ class CreateRegvisitaTable extends Migration
             $table->integer('ofi_codigo')->nullable();
             $table->text('nom_oficina')->nullable();
             $table->text('nom_funcionario')->nullable();
-            $table->text('iprocedencia')->nullable();// institucion de procedencia
+            $table->string('tipo_persona')->nullable();
             $table->integer('iddirecciones_web')->nullable();
+            $table->text('iprocedencia')->nullable();// institucion de procedencia
+            $table->string('institucion')->nullable();
+            $table->string('cargo')->nullable();
+            $table->string('lugar')->nullable();
+            $table->text('observaciones')->nullable();
+
             $table->timestamps();
         });
     }

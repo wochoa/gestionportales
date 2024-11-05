@@ -18,25 +18,35 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('storage/notas-prensa/{file}', function ($file) {
+Route::get('storage/notas-prensa/{file}', 'Filescontroller@notaprensa')->name('file.notaprensa');
+Route::get('storage/avatar/{file}', 'Filescontroller@avatar')->name('avatar');
+Route::get('storage/enlaceref/{file}', 'Filescontroller@enlaceref')->name('file.enlaceref');
+Route::get('storage/logos/{file}', 'Filescontroller@logos')->name('file.logos');
+Route::get('storage/popup/{file}', 'Filescontroller@popup')->name('file.popup');
+Route::get('storage/fag/{file}', 'Filescontroller@fag')->name('file.fag');
+Route::get('storage/slider/{file}', 'Filescontroller@slider')->name('file.slider');
+Route::get('storage/seccion/{file}', 'Filescontroller@seccion')->name('file.seccion');
+Route::get('storage/{file}', 'Filescontroller@files')->name('files');
 
-	$rutaDeArchivo = storage_path() . '/app/public/notas-prensa/' . $file;
-	//return $rutaDeArchivo;
-	return response()->file($rutaDeArchivo);
-});
-Route::get('storage/avatar/{file}', function ($file) {
+// Route::get('storage/notas-prensa/{file}', function ($file) {
 
-	$rutaDeArchivo = storage_path() . '/app/avatar/' . $file;
-	//return $rutaDeArchivo;
-	return response()->file($rutaDeArchivo);
-});
+// 	$rutaDeArchivo = storage_path() . '/app/public/notas-prensa/' . $file;
+// 	//return $rutaDeArchivo;
+// 	return response()->file($rutaDeArchivo);
+// });
+// Route::get('storage/avatar/{file}', function ($file) {
 
-Route::get('storage/enlaceref/{file}', function ($file) {
+// 	$rutaDeArchivo = storage_path() . '/app/avatar/' . $file;
+// 	//return $rutaDeArchivo;
+// 	return response()->file($rutaDeArchivo);
+// });
 
-	$rutaDeArchivo = storage_path() . '/app/public/enlaceref/' . $file;
-	//return $rutaDeArchivo;
-	return response()->file($rutaDeArchivo);
-});
+// Route::get('storage/enlaceref/{file}', function ($file) {
+
+// 	$rutaDeArchivo = storage_path() . '/app/public/enlaceref/' . $file;
+// 	//return $rutaDeArchivo;
+// 	return response()->file($rutaDeArchivo);
+// });
 
 // Route::get('storage/avatar/{file}', function ($file) {
 
@@ -45,52 +55,53 @@ Route::get('storage/enlaceref/{file}', function ($file) {
 // 	return response()->file($rutaDeArchivo);
 // });
 
-Route::get('storage/logos/{file}', function ($file) {
+// Route::get('storage/logos/{file}', function ($file) {
 
-	$rutaDeArchivo = storage_path() . '/app/public/logos/' . $file;
-	//return $rutaDeArchivo;
-	return response()->file($rutaDeArchivo);
-});
-Route::get('storage/popup/{file}', function ($file) {
+// 	$rutaDeArchivo = storage_path() . '/app/public/logos/' . $file;
+// 	//return $rutaDeArchivo;
+// 	return response()->file($rutaDeArchivo);
+// });
+// Route::get('storage/popup/{file}', function ($file) {
 
-	$rutaDeArchivo = storage_path() . '/app/public/popup/' . $file;
-	//return $rutaDeArchivo;
-	return response()->file($rutaDeArchivo);
-});
-Route::get('storage/fag/{file}', function ($file) {
+// 	$rutaDeArchivo = storage_path() . '/app/public/popup/' . $file;
+// 	//return $rutaDeArchivo;
+// 	return response()->file($rutaDeArchivo);
+// });
+// Route::get('storage/fag/{file}', function ($file) {
 
-	$rutaDeArchivo = storage_path() . '/app/public/fag/' . $file;
-	return response()->file($rutaDeArchivo);
-});
-Route::get('storage/slider/{file}', function ($file) {
+// 	$rutaDeArchivo = storage_path() . '/app/public/fag/' . $file;
+// 	return response()->file($rutaDeArchivo);
+// });
+// Route::get('storage/slider/{file}', function ($file) {
 
-	$rutaDeArchivo = storage_path() . '/app/public/slider/' . $file;
-	//return $rutaDeArchivo;
-	return response()->file($rutaDeArchivo);
-});
-Route::get('storage/seccion/{file}', function ($file) {
+// 	$rutaDeArchivo = storage_path() . '/app/public/slider/' . $file;
+// 	//return $rutaDeArchivo;
+// 	return response()->file($rutaDeArchivo);
+// });
 
-	$rutaDeArchivo = storage_path() . '/app/public/seccion/' . $file;
-	//return $rutaDeArchivo;
-	return response()->file($rutaDeArchivo);
-});
+// Route::get('storage/seccion/{file}', function ($file) {
 
-Route::get('storage/{file}', function ($file) {
+// 	$rutaDeArchivo = storage_path() . '/app/public/seccion/' . $file;
+// 	//return $rutaDeArchivo;
+// 	return response()->file($rutaDeArchivo);
+// });
 
-	$rutaDeArchivo = storage_path() . '/app/public/' . $file;
-	//return $rutaDeArchivo;
-	return response()->file($rutaDeArchivo);
-});
+// Route::get('storage/{file}', function ($file) {
+
+// 	$rutaDeArchivo = storage_path() . '/app/public/' . $file;
+// 	//return $rutaDeArchivo;
+// 	return response()->file($rutaDeArchivo);
+// });
 
 Route::get('/', 'HomeController@index')->name('main');
 
-Route::get('/register', function () {
-    return redirect('/');
-});
+// Route::get('/register', function () {
+//     return redirect('/');
+// });
 
-Route::get('/password/reset', function () {
-    return redirect('/');
-});
+// Route::get('/password/reset', function () {
+//     return redirect('/');
+// });
 
 
 //Route::view('/login','auth.login')->name('login');
@@ -229,12 +240,39 @@ route::get('/directoresyjefes','sgdcontroller@directoresyjefes')->name('director
 //route::get('/acceso','')->name('acceso');
 
 // enlace de regvistas
-route::get('/regvisitas','Visitas@index')->name('regvisitas');
-route::get('/reportevisit','Visitas@reportevisit')->name('reportevisit');
+route::get('/regvisitas','VisitaController@index')->name('regvisitas');
+//route::get('/reportevisit','Visitas@reportevisit')->name('reportevisit');
+
+route::get('/reportevisit','VisitaController@reporte')->name('reportevisit');
 
 route::get('/reniec/{dni}','Visitas@reniec')->name('reniec');
 route::post('reportevisitas','Visitas@reportevisitas')->name('reportevisitas');
 
 /// para consultas externa para el registro de visitas
 route::get('reporte_extrenovisitas','Externopagina@index')->name('reporexterno');
+
+Route::group(['middleware' => ['web']], function(){
 route::get('listado_extrenovisitas/{id}','Externopagina@listado_extrenovisitas')->name('listado_extrenovisitas');
+});
+
+//  Route::get('phpmyinfo', function () {
+//     phpinfo(); 
+// })->name('phpmyinfo');
+
+//Modificado por Abel
+Route::group(['middleware' => ['auth']], function(){
+    route::get('visitas-externo','VisitaController@indexExterno')->name('visitas-externo');
+    route::get('listarFuncionarios/{dependencia}','VisitaController@listarFuncionarios')->name('listar-funcionarios');
+    route::post('listarVisitas','VisitaController@listarVisitas')->name('list-visitas');
+    route::post('listarVisitasReporte','VisitaController@listarVisitasReporte')->name('list-visitas-reporte');
+    Route::resource('visitas', 'VisitaController')->except([
+        'show', 'destroy'
+    ]);
+});
+
+Route::group(['middleware' => ['web']], function(){
+    route::get('indexVisitasExterno2/{portal}','VisitaController@indexVisitasExterno2')->name('index-visitas-externo2');
+    route::get('indexVisitasExterno/{portal}','VisitaController@indexVisitasExterno')->name('index-visitas-externo');
+    route::post('listarVisitasExterno','VisitaController@listarVisitasExterno')->name('list-visitas-externo');
+});
+////////////////////////

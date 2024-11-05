@@ -7,8 +7,14 @@ $act_sgd=substr($enlcae,0,3);//sgd
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="iso-8859-2">
+  {{--  MODIFICADO POR ABEL --}}
+    {{--  <meta charset="iso-8859-2">--}}
+    <meta charset="iso-8859-2">
+    {{--  ------------------- --}}
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  {{--  MODIFICADO POR ABEL --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    {{--  ------------------- --}}
   <title>@yield('titulopagina')</title>
 
   <link rel="icon" type="image/png" href="{{ asset('dist/img/favicon.png') }}">
@@ -39,6 +45,8 @@ $act_sgd=substr($enlcae,0,3);//sgd
   <link rel="stylesheet" href="{{ asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
   <!-- Daterange picker -->
   <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
+   <!-- Tempusdominus Bootstrap 4 -->
+  <link rel="stylesheet" href="{{ asset('plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
   <!-- summernote -->
   <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
   <!-- Google Font: Source Sans Pro -->
@@ -234,7 +242,22 @@ $act_sgd=substr($enlcae,0,3);//sgd
 
     <!-- Main content -->
     <section class="content">
-      
+      {{--  MODIFICADO POR ABEL --}}
+        <div id="myModal" class="modal fade" role="dialog">
+        </div>
+        <div class="row">
+            <!-- cargador empresa  -->
+            <div style="display: none;" id="cargador1" align="center">
+                <img src="{{ asset('app-assets/images/cargando.gif') }}" align="middle" alt="cargador">
+                &nbsp;<label style="color:#3C8DBC">Realizando tarea solicitada ...</label>
+            </div>
+            <!-- cargador 2 -->
+            <div style="display: none;" id="cargador2" align="center">
+                <img src="{{ asset('app-assets/images/load.gif') }}" align="middle" alt="cargador">
+                &nbsp;<label style="color:#B9260E">Espere ...</label>
+            </div>
+        </div>
+        {{--  ------------------- --}}
         @yield("contenido")
         <!-- ./row -->
       
@@ -271,6 +294,71 @@ $act_sgd=substr($enlcae,0,3);//sgd
 <script src="{{ asset('plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 <!-- Toastr -->
 <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+{{--  MODIFICADO POR ABEL --}}
+<script src="{{ asset('plugins/moment/moment.min.js') }}"></script>
+<script src="{{ asset('plugins/inputmask/jquery.inputmask.min.js') }}"></script>
+<script src="{{ asset('plugins/daterangepicker/daterangepicker.js') }}"></script>
+<script src="{{ asset('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+<script>
+  $(function () {
+      //Date range picker
+      $('#daterange-btn').daterangepicker({
+          locale: {
+              "applyLabel": "Aceptar",
+              "cancelLabel": "Cancelar",
+              "fromLabel": "Desde",
+              "toLabel": "Hasta",
+              "customRangeLabel": "Seleccione periodo",
+              "daysOfWeek": [
+                  "Do",
+                  "Lu",
+                  "Ma",
+                  "Mi",
+                  "Ju",
+                  "Vi",
+                  "Sa"
+              ],
+              "monthNames": [
+                  "Enero",
+                  "Febrero",
+                  "Marzo",
+                  "Abril",
+                  "Mayo",
+                  "Junio",
+                  "Julio",
+                  "August",
+                  "Setiembre",
+                  "Octubre",
+                  "Noviembre",
+                  "Diciembre"
+              ]
+          },
+          ranges   : {
+              'Hoy'       : [moment(), moment()],
+              'Ayer'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+              'Últimos 7 Días' : [moment().subtract(6, 'days'), moment()],
+              'Últimos 30 Días': [moment().subtract(29, 'days'), moment()],
+              'Mes Actual'  : [moment().startOf('month'), moment().endOf('month')],
+              'Mes Anterior'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+          },
+          maxSpan: {
+              "days": 89
+          },
+          startDate: moment(),//.subtract(29, 'days'),
+          endDate  : moment()
+      }, cb);
+
+      function cb(start, end) {
+          $('#daterange-btn span').html('<i class="fa fa-calendar-alt"></i>&nbsp;&nbsp;&nbsp;' + start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
+          $('#fechabusqueda').val(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
+          startDate = start;
+          endDate = end;
+      }
+
+      cb(moment(), moment());
+  });
+</script>
+  {{--  ------------------- --}}
 <!-- AdminLTE App -->
 <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
 <!-- AdminLTE for demo purposes -->

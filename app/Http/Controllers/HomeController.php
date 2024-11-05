@@ -30,12 +30,12 @@ class HomeController extends Controller
          // paginas web creadas
          $iduser=auth()->user()->id;
 
-         $idpaginaweb=DB::connection('mysql')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
-         $nombreportalweb=DB::connection('mysql')->table('direcciones_web')->where('iddirecciones_web',$idpaginaweb)->value('nom_direcciones_web');
+         $idpaginaweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->value('iddirecciones_web');
+         $nombreportalweb=DB::connection('pgsql_pag')->table('direcciones_web')->where('iddirecciones_web',$idpaginaweb)->value('nom_direcciones_web');
 		
          
-         $dirweb = DB::connection('mysql')->table('direcciones_web')->where('dns_direcciones_web','!=',null)->OrderBy('iddirecciones_web', 'desc')->get();
-         $dirweb2 = DB::connection('mysql')->table('direcciones_web')->where('linkdirecciones_web','!=',null)->OrderBy('iddirecciones_web', 'desc')->get();
+         $dirweb = DB::connection('pgsql_pag')->table('direcciones_web')->where('dns_direcciones_web','!=',null)->OrderBy('iddirecciones_web', 'desc')->get();
+         $dirweb2 = DB::connection('pgsql_pag')->table('direcciones_web')->where('linkdirecciones_web','!=',null)->OrderBy('iddirecciones_web', 'desc')->get();
 
          // consulta para sacar el rol para la persona
          $colroles=DB::table('model_has_roles')->join('roles','model_has_roles.role_id','=','roles.id')->where('model_id',$iduser)->get();

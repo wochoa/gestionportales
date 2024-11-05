@@ -143,8 +143,14 @@
       </li>
       @endcan
       @can('pg_menu_registrovisitas')
-      <li class="nav-item has-treeview {{ menuopen(['regvisitas','reportevisit','reporexterno'])}}">
-        <a href="#" class="nav-link {{ tituloactivo(['regvisitas','reportevisit','reporexterno']) }}">
+	  {{-- MODIFICADO POR ABEL --}}
+		{{--        <li class="nav-item has-treeview {{ menuopen(['regvisitas','reportevisit','reporexterno'])}}">--}}
+        <li class="nav-item has-treeview {{ menuopen(['visitas.index','reportevisit','reporexterno'])}}">
+        {{-- ------------------- --}}
+         {{-- MODIFICADO POR ABEL --}}
+		{{--        <a href="#" class="nav-link {{ tituloactivo(['regvisitas','reportevisit','reporexterno']) }}">--}}
+            <a href="#" class="nav-link {{ tituloactivo(['visitas.index','reportevisit','reporexterno']) }}">
+            {{-- ------------------- --}}
           <i class="nav-icon fas fa-tachometer-alt"></i>
           <p>
             Registro de visitas
@@ -154,7 +160,10 @@
         <ul class="nav nav-treeview">
           @can('pg_registrovisitas_leer')
           <li class="nav-item">
-            <a href="{{ route('regvisitas') }}" class="nav-link {{ activo('regvisitas') }}">
+			 {{-- MODIFICADO POR ABEL --}}
+{{--                    <a href="{{ route('regvisitas') }}" class="nav-link {{ activo('regvisitas') }}">--}}
+                    <a href="{{ route('visitas.index') }}" class="nav-link {{ activo('visitas.index') }}">
+			{{-- ------------------- --}}
               <i class="far fa-circle nav-icon"></i>
               <p>Registrar visitas</p>
             </a>
