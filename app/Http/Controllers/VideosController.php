@@ -19,10 +19,10 @@ class VideosController extends Controller
     {
         // consultamos a BD para saber el el usuario tiene acceso para crear publicaccion respectivamente con el id de pagina creada
 		$iduser=Auth::user()->id;
-		$accesoweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->get();
+		$accesoweb=DB::connection('pgsql_pag')->table('userportales')->where('iduser',$iduser)->orderBy('id','DESC')->get();
 		$idweb = $accesoweb[0]->iddirecciones_web;
 
-		$videos=DB::connection('pgsql_pag')->table('videos')->where('iddirecciones_web',$idweb)->paginate(10);
+		$videos=DB::connection('pgsql_pag')->table('videos')->where('iddirecciones_web',$idweb)->orderBy('id','DESC')->paginate(10);
 		
 		return view('videos',compact('videos'));
     }
@@ -100,7 +100,7 @@ class VideosController extends Controller
 		$datos=$request->all();
 
 		$id=$datos["id"];
-		$titulo=$datos["titulo"];
+		$titulo=$datos["titulop"];
 		$url=$datos["urlp"];
 	
 		$sql="UPDATE videos set titulo='$titulo', url='$url' where id=$id";
