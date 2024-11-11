@@ -194,6 +194,7 @@
                     <select class="form-control form-control-sm " name="colore" id="coloredit">
                         <option selected="selected" value="primary">Primary</option>
                         <option value="success">Success</option>
+                        <option value="light">Light</option>
                         <option value="warning">Warning</option>
                         <option value="danger">Danger</option>
                         <option value="info">Info</option>

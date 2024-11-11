@@ -29,7 +29,8 @@ class Visitas extends Controller
 
     public function reniec($id)
     {
-        $url='http://app.regionhuanuco.gob.pe/soap_pruebas/reniec.php?cdni='.$id.'&key=j53e130xRfEV1KYH1W2m57HToKRtaIYGKn0RlBqQUf9l2pCh8ewoK1inHj5HdVGb';
+        $key=env('KEY_DNI');
+        $url='http://app.regionhuanuco.gob.pe/soap_pruebas/reniec.php?cdni='.$id.'&key='.$key;
 
         $wsdl = file_get_contents($url);
         return $wsdl;

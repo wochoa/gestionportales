@@ -108,6 +108,14 @@
             </a>
           </li>
           @endcan
+          @can('gp_videos')
+          <li class="nav-item">
+            <a href="{{ url('/portalweb/videos') }}" class="nav-link {{ activo('videos') }}">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Videos de youtube</p>
+            </a>
+          </li>
+          @endcan
         </ul>
       </li>
       @endcan

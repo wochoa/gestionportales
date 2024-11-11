@@ -225,6 +225,16 @@ route::get('/desactivarefe/{id}','Contentgral@desactivarefe')->name('desactivare
 route::get('/activarefe/{id}','Contentgral@activarefe')->name('activarefe');
 route::get('/elimnarefe/{id}','Contentgral@elimnarefe')->name('elimnarefe');
 
+// videos
+route::get('/portalweb/videos','VideosController@index')->name('videos');
+route::post('/addregvideos','VideosController@addregvideos')->name('addregvideos');
+route::get('/desactivavideos/{id}','VideosController@desactivavideos')->name('desactivavideos');
+route::get('/activavideos/{id}','VideosController@activavideos')->name('activavideos');
+route::get('/elimnavideos/{id}','VideosController@elimnavideos')->name('elimnavideos');
+
+route::post('/editvideo','VideosController@editvideo')->name('editvideo');
+route::get('/datovideo/{id}','VideosController@datovideo')->name('datovideo');
+
 // enlace para reclamaciones
 route::get('/reclamaciones','Contentgral@reclamaciones')->name('reclamaciones');
 
