@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use App\UserLog;
 class LoginController extends Controller
 {
     /*
@@ -58,8 +59,19 @@ class LoginController extends Controller
             if ($user->adm_estado==1 &&$activo && $this->attemptLogin($request)) {
                 if ($request->modal)
                     return json_encode((Object)['status' => 'logued']);
-                else
+                else{
+                    UserLog::create([
+                        'user_id' => $request->user()->id,
+                        'action' => 'login',
+                    ]);
                     return $this->sendLoginResponse($request);
+                }
+
+                ///
+                // $request->session()->regenerate();
+
+                
+                    
             }
             elseif($user->adm_estado!=1) {
 
@@ -94,4 +106,17 @@ class LoginController extends Controller
 		// return $fieldtype;
 		return 'adm_email';
 	}
+
+    public function logout(Request $request)
+    {
+        UserLog::create([
+            'user_id' => $request->user()->id,
+            'action' => 'logout',
+        ]);
+
+        $this->guard()->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
+    }
 }
