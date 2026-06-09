@@ -68,15 +68,10 @@ $act_sgd=substr($enlcae,0,3);//sgd
 <body class="sidebar-mini layout-fixed  text-sm accent-lightblue {{ Auth::user()->darkmode }}">
   {{-- PONEMOS IMAGEN POR DEFECTO PARA EL AVATAR --}}
   @if(Auth::user()->avatar)
-    @php
-      //$avatar=Storage::url(Auth::user()->avatar)
-      $ava=Auth::user()->avatar;
-      $avatar='http://goredigital.regionhuanuco.gob.pe/storage/'.$ava;
-    @endphp
-  @else
+   
     @php
       //$avatar=asset('dist/img/avatar.png');
-      $avatar=Storage::url('avatar/logo.png')
+      $avatar=asset('avatar/logo.png');
     @endphp
   @endif
   {{-- FINALIZAMOS LA IMAGEN DE AVATAR --}}

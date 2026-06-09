@@ -24,18 +24,22 @@
             </a>
           </li>
           @endcan
+          @can('gp_convocatoria')
           <li class="nav-item">
             <a href="{{ url('/portalweb/convocatoria') }}" class="nav-link {{ activo('convocatoria') }}">
               <i class="far fa-circle nav-icon"></i>
               <p>Convocatoria</p>
             </a>
           </li>
+          @endcan
+          @can('gp_fag')
           <li class="nav-item">
             <a href="{{ url('/portalweb/fag') }}" class="nav-link {{ activo('fag') }}">
               <i class="far fa-circle nav-icon"></i>
               <p>Fondo apoyo gerencial</p>
             </a>
           </li>
+          @endcan
           @can('gp_publicacion_leer')
           <li class="nav-item">
             <a href="{{ url('/portalweb/publicacion') }}" class="nav-link {{ activo('publicacion') }}">
