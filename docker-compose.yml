@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  # Aplicación Laravel
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel_app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    networks:
+      - laravel_network
+
+  # Servidor Web Nginx
+  webserver:
+    image: nginx:alpine
+    container_name: laravel_nginx
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www
+      - .:/etc/nginx/conf.d/:ro  # <- CAMBIA ESTA LÍNEA (Apunta a la carpeta contenedora en modo lectura)
+    networks:
+      - laravel_network
+    depends_on:
+      - app
+
+  # Base de Datos PostgreSQL
+  db:
+    image: postgres:13-alpine
+    container_name: laravel_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: laravel_db
+      POSTGRES_USER: laravel_user
+      POSTGRES_PASSWORD: user_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/data/postgres
+    networks:
+      - laravel_network
+
+networks:
+  laravel_network:
+    driver: bridge
+
+volumes:
+  pgdata:
+    driver: local
