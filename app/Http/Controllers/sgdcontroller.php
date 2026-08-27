@@ -17,8 +17,7 @@ class sgdcontroller extends Controller
     }
     public function consultaapidepe($id)
     {
-        $consulta='select *from admin where (depe_id='.$id.' and adm_estado=1 )';
-        $sql=DB::connection('pgsql')->select($consulta);
+        $sql = DB::connection('pgsql')->select('select * from admin where depe_id = ? and adm_estado = 1', [$id]);
         return $sql;
 
     }

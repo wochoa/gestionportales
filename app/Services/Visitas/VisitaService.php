@@ -29,29 +29,33 @@ class VisitaService{
                                            motivo,
                                            CASE WHEN lugar IS NULL THEN nom_oficina ELSE lugar END as lugar,
                                            observaciones")
-                        ->where('estado',1)
-                        ->where('iddirecciones_web',$data['portal'])
-                        ->whereRaw("CAST(fechaingreso AS DATE) BETWEEN '".$fechainicio."' AND '".$fechafinal."' ");
-        if(isset($data['busqueda'])){
-            $query->whereRaw("nombre like '%".$data['busqueda']."%' or dni like '%".$data['busqueda']."%'
-                            or institucion like '%".$data['busqueda']."%' or CONCAT(nom_funcionario, ' - ', cargo) like '%".$data['busqueda']."%'");
+                        ->where('estado', 1)
+                        ->where('iddirecciones_web', $data['portal'])
+                        ->whereBetween('fechaingreso', [$fechainicio . ' 00:00:00', $fechafinal . ' 23:59:59']);
+
+        if (!empty($data['busqueda'])) {
+            $busqueda = '%' . $data['busqueda'] . '%';
+            $query->where(function ($q) use ($busqueda) {
+                $q->where('nombre', 'ILIKE', $busqueda)
+                  ->orWhere('dni', 'ILIKE', $busqueda)
+                  ->orWhere('institucion', 'ILIKE', $busqueda)
+                  ->orWhereRaw("CONCAT(nom_funcionario, ' - ', cargo) ILIKE ?", [$busqueda]);
+            });
         }
- 	if($data['oficodigo'] == 11){
+
+        if ($data['oficodigo'] == 11) {
             $query->where("ofi_codigo", $data['oficodigo']);
         }
 
-        $datos = $query->get();
-        return $datos;
+        return $query->get();
     }
 
     public function verificarVisitanteHoy($data){
-        $datos = $this->modelo
-            ->whereRaw("CAST(fechaingreso AS DATE) = '".Carbon::today()->format('Y-m-d')."'")
+        return $this->modelo
             ->where('estado', 1)
             ->where('dni', $data['dni'])
-            ->get();
-
-        return $datos->count();
+            ->whereBetween('fechaingreso', [Carbon::today()->startOfDay(), Carbon::today()->endOfDay()])
+            ->count();
     }
 
     public function listarExterno($data){
@@ -72,16 +76,20 @@ class VisitaService{
                                        motivo,
                                        CASE WHEN lugar IS NULL THEN nom_oficina ELSE lugar END as lugar,
                                        observaciones")
-                    ->where('iddirecciones_web',$data['portal'])
-                    ->whereRaw("CAST(fechaingreso AS DATE) BETWEEN '".$fechainicio."' AND '".$fechafinal."' ");
+                    ->where('iddirecciones_web', $data['portal'])
+                    ->whereBetween('fechaingreso', [$fechainicio . ' 00:00:00', $fechafinal . ' 23:59:59']);
 
-        if(isset($data['busqueda'])){
-            $query->whereRaw("nombre like '%".$data['busqueda']."%' or dni like '%".$data['busqueda']."%'
-                            or institucion like '%".$data['busqueda']."%' or CONCAT(nom_funcionario, ' - ', cargo) like '%".$data['busqueda']."%'");
+        if (!empty($data['busqueda'])) {
+            $busqueda = '%' . $data['busqueda'] . '%';
+            $query->where(function ($q) use ($busqueda) {
+                $q->where('nombre', 'ILIKE', $busqueda)
+                  ->orWhere('dni', 'ILIKE', $busqueda)
+                  ->orWhere('institucion', 'ILIKE', $busqueda)
+                  ->orWhereRaw("CONCAT(nom_funcionario, ' - ', cargo) ILIKE ?", [$busqueda]);
+            });
         }
-        $datos = $query->get();
 
-        return $datos;
+        return $query->get();
     }
 
     public function store($data){
@@ -146,18 +154,23 @@ class VisitaService{
                                        motivo,
                                        CASE WHEN lugar IS NULL THEN nom_oficina ELSE lugar END as lugar,
                                        observaciones")
-            ->where('iddirecciones_web',$data['portal'])
-            ->whereRaw("CAST(fechaingreso AS DATE) BETWEEN '".$fechainicio."' AND '".$fechafinal."' ");
+            ->where('iddirecciones_web', $data['portal'])
+            ->whereBetween('fechaingreso', [$fechainicio . ' 00:00:00', $fechafinal . ' 23:59:59']);
 
-        if(isset($data['busqueda'])){
-            $query->whereRaw("nombre like '%".$data['busqueda']."%' or dni like '%".$data['busqueda']."%'
-                            or institucion like '%".$data['busqueda']."%' or CONCAT(nom_funcionario, ' - ', cargo) like '%".$data['busqueda']."%'");
+        if (!empty($data['busqueda'])) {
+            $busqueda = '%' . $data['busqueda'] . '%';
+            $query->where(function ($q) use ($busqueda) {
+                $q->where('nombre', 'ILIKE', $busqueda)
+                  ->orWhere('dni', 'ILIKE', $busqueda)
+                  ->orWhere('institucion', 'ILIKE', $busqueda)
+                  ->orWhereRaw("CONCAT(nom_funcionario, ' - ', cargo) ILIKE ?", [$busqueda]);
+            });
         }
-        if($data['oficodigo'] == 11){
+
+        if ($data['oficodigo'] == 11) {
             $query->where("ofi_codigo", $data['oficodigo']);
         }
-        $datos = $query->get();
 
-        return $datos;
+        return $query->get();
     }
 }

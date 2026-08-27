@@ -99,8 +99,8 @@ class LoginController extends Controller
         //return view("welcome");
     }
 	public function username() {
-		// $login = request()->input("adm_password");
-		// $fieldtype = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'adm_password';
+		// $login = request()->input("password");
+		// $fieldtype = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'password';
 		// request()->merge([$fieldtype => $login]);
 
 		// return $fieldtype;
