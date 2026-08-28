@@ -793,11 +793,11 @@ class Contentgral extends Controller {
 	public function registropagina() {
 		$datos = DB::connection('pgsql_pag')->table('direcciones_web')->OrderBy('iddirecciones_web', 'desc')->paginate(15);
 
-		$dependencia=DB::table('dependencia')->select('depe_depende')->where(['depe_estado'=>'1','depe_tipo'=>'1'])->groupBy('depe_depende')->orderBy('depe_depende','ASC')->get();
+		$dependencia=DB::table('tram_dependencia')->select('depe_depende')->where(['depe_estado'=>'1','depe_tipo'=>'1'])->groupBy('depe_depende')->orderBy('depe_depende','ASC')->get();
         
         for($i=0;$i<count($dependencia);$i++)
         {
-                $nomdepe=DB::table('dependencia')->where('iddependencia',$dependencia[$i]->depe_depende)->get();
+                $nomdepe=DB::table('tram_dependencia')->where('iddependencia',$dependencia[$i]->depe_depende)->get();
 
                 if($dependencia[$i]->depe_depende<>1034 and $dependencia[$i]->depe_depende<>1818 and $dependencia[$i]->depe_depende<>851 and $dependencia[$i]->depe_depende<>1894)
                 {$datosdepe[]=array("iddepe"=>$dependencia[$i]->depe_depende,"nombredebe"=>$nomdepe[0]->depe_nombre);}
@@ -814,6 +814,28 @@ class Contentgral extends Controller {
 
 		//return $datos;
 		return redirect('/administrador/registrousuarios');
+	}
+	public function formeditregistropagina(Request $request) {
+		$request->validate([
+			'id' => 'required',
+			'nomdireccion' => 'required',
+		]);
+
+		$id = $request->id;
+		$nom = $request->nomdireccion;
+		$dominiogore = $request->input('dominiogore');
+		$dominioext = $request->input('dominioext');
+
+		DB::connection('pgsql_pag')->table('direcciones_web')
+			->where('iddirecciones_web', $id)
+			->update([
+				'nom_direcciones_web' => $nom,
+				'dns_direcciones_web' => $dominiogore,
+				'linkdirecciones_web' => $dominioext,
+			]);
+
+		session()->flash('success', 'Página web actualizada correctamente.');
+		return redirect('/administrador/registropagina');
 	}
 	public function tema()
 	{	
@@ -923,32 +945,46 @@ class Contentgral extends Controller {
 
 	/// seccion para usuarios....
 	public function formeditusuario(Request $request) {
-		$datos = $request->all();
-		$id = $datos["iduser"];
-		if ($datos['pass'] != '') {
-			$clave = Hash::make($datos['pass']);
-			$sql = "UPDATE users SET password='" . $clave . "' WHERE id=" . $id;
-			$resultado = DB::connection('pgsql_pag')->UPDATE($sql);
+		$request->validate([
+			'iduser' => 'required',
+			'pass' => 'required|min:4'
+		]);
+		
+		$user = \App\User::find($request->iduser);
+		if ($user) {
+			$user->password = \Illuminate\Support\Facades\Hash::make($request->pass);
+			$user->save();
+			session()->flash('newuser', 'Contraseña actualizada correctamente.');
+		} else {
+			session()->flash('danger', 'Usuario no encontrado.');
 		}
 
-		//return $datos;
 		return redirect('/administrador/registrousuarios');
 	}
 	public function registrousuarios() {
 		$datosuser = DB::connection('pgsql_pag')->table('userportales')->OrderBy('id', 'asc')->paginate(15);
-		$roles=DB::connection('pgsql_pag')->table('roles')->get();
+		$roles=DB::table('roles')->get();
 		$paginasweb=DB::connection('pgsql_pag')->table('direcciones_web')->get();
-		return view('usuarios', compact('datosuser','roles','paginasweb'));
+		
+		$availableUsers = DB::table('admin')
+			->leftJoin('tram_dependencia', 'admin.depe_id', '=', 'tram_dependencia.iddependencia')
+			->select('admin.id', 'admin.adm_name', 'admin.adm_lastname', 'admin.adm_email', 'admin.adm_dni', 'tram_dependencia.depe_nombre')
+			->where('admin.adm_estado', '1')
+			->whereNotNull('admin.adm_inicial')
+			->orderBy('admin.adm_lastname', 'asc')
+			->get();
+
+		return view('usuarios', compact('datosuser','roles','paginasweb', 'availableUsers'));
 	}
 	// para jalar datos en formato y pasarlo a ajax
 	public function datosuser($id) {
-		$databucado = DB::connection('pgsql_pag')->table('users')->where('id', $id)->get();
+		$databucado = DB::table('admin')->where('id', $id)->get();
 		return $databucado;
 	}
 	// para comprobar la existencia correos
 	public function compruebacorreo($id)
 	{
-		$databucado = DB::connection('pgsql_pag')->table('users')->where('email',$id)->get();
+		$databucado = DB::table('admin')->where('adm_correo',$id)->get();
 		if(count($databucado)){
 			$texto="Ya existe un correo similar";
 		}
@@ -958,7 +994,7 @@ class Contentgral extends Controller {
 	// para comprobar la existencia de username
 	public function compruebausuario($id)
 	{
-		$databucado = DB::connection('pgsql_pag')->table('users')->where('username',$id)->get();
+		$databucado = DB::table('admin')->where('adm_email',$id)->get();
 		if(count($databucado)){
 			$texto="Ya existe el username similar";
 		}
@@ -967,30 +1003,45 @@ class Contentgral extends Controller {
 	}
 	public function formnewuser(Request $request)
 	{
-		$datos=$request->all();
-		$nombres=$datos["nombres"];
-		$email=$datos["email"];
-		$dirweb=$datos["direweb"];
-		$rol=$datos["rol"];
-		$usuarionew=$datos["usuarionew"];
-		$clave=Hash::make($datos["clave"]);
-		$fecha=date('Y-m-d H:i:s');
-		if($request->file('imagen')){$imagen=$request->file('imagen')->store('public/avatar');}
-		else{$imagen="public/avatar/default.png";}
-		
+		$request->validate([
+			'iduser' => 'required',
+			'direweb' => 'required',
+			'rol' => 'required'
+		]);
 
-		DB::connection('pgsql_pag')->insert('insert into users (name,email,username,password,profile_pic,is_active,rol,iddirecciones_web,created_at,updated_at) values (?, ?,?,?,?,?,?,?,?,?)', [$nombres,$email,$usuarionew,$clave,$imagen,1,$rol,$dirweb,$fecha,$fecha]);
+		$user = DB::table('admin')->where('id', $request->iduser)->first();
+		if (!$user) {
+			session()->flash('danger', 'Usuario no encontrado');
+			return back();
+		}
 
-		session()->flash('newuser', 'Fue creado nuevo usuario');
+		// Insert connection pgsql_pag into userportales
+		DB::connection('pgsql_pag')->table('userportales')->insert([
+			'iduser' => $user->id,
+			'nombreuser' => trim($user->adm_name . ' ' . $user->adm_lastname),
+			'iddirecciones_web' => $request->direweb,
+			'created_at' => date('Y-m-d H:i:s'),
+			'updated_at' => date('Y-m-d H:i:s'),
+		]);
+
+		// Assign Spatie role to default user
+		$eloquentUser = \App\User::find($user->id);
+		if ($eloquentUser) {
+			$eloquentUser->syncRoles([$request->rol]);
+		}
+
+		// Flush cache
+		app(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+
+		session()->flash('newuser', 'Usuario asignado exitosamente al portal y rol.');
 		return back()->withInput();
-		//return $datos;
 	}
 	public function eliminauser($id)
 	{
-		$sql="DELETE FROM users where id=".$id;
-		DB::connection('pgsql_pag')->delete($sql);
-		session()->flash('danger', 'Fue eliminado el usuario');
-		return back()->withInput();
+		// Delete relation from pgsql_pag connection's userportales
+		DB::connection('pgsql_pag')->table('userportales')->where('id', $id)->delete();
+		session()->flash('danger', 'Fue eliminada la asignación del usuario.');
+		return back();
 	}
 // fin de usuarios	
 	

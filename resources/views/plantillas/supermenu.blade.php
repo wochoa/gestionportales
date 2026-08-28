@@ -225,15 +225,46 @@
        </li> --}}
       
 
-      {{-- <li class="nav-header">Sección del usuario</li>
+      @if(auth()->user()->hasRole('Superadmin') || auth()->user()->hasAnyPermission(['Pagina_roles', 'Pagina_permisos', 'UsuarioSGD_rol']))
+      <li class="nav-header">ADMINISTRACIÓN</li>
 
-      <li class="nav-item has-treeview {{ menuopen(['roles','permisos','registrousuarios','registropagina'])}}">
-          <a href="#" class="nav-link {{ tituloactivo(['roles','permisos','registrousuarios','registropagina']) }}"><i class="nav-icon fas fa-tachometer-alt"></i><p>Administrador<i class="right fas fa-angle-left"></i></p></a>
-
+      <li class="nav-item has-treeview {{ menuopen(['roles.index', 'permisos.index', 'accesos.index', 'registrousuarios', 'registropagina'])}}">
+          <a href="#" class="nav-link {{ tituloactivo(['roles.index', 'permisos.index', 'accesos.index', 'registrousuarios', 'registropagina']) }}">
+            <i class="nav-icon fas fa-cogs"></i>
+            <p>
+              Administración
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
 
         <ul class="nav nav-treeview">
-         
-          
+          @if(auth()->user()->hasRole('Superadmin') || auth()->user()->can('Pagina_roles'))
+          <li class="nav-item">
+            <a href="{{ route('roles.index') }}" class="nav-link {{ activo('roles.index') }}">
+              <i class="far fa-circle nav-icon text-info"></i>
+              <p>Roles</p>
+            </a>
+          </li>
+          @endif
+
+          @if(auth()->user()->hasRole('Superadmin') || auth()->user()->can('Pagina_permisos'))
+          <li class="nav-item">
+            <a href="{{ route('permisos.index') }}" class="nav-link {{ activo('permisos.index') }}">
+              <i class="far fa-circle nav-icon text-warning"></i>
+              <p>Permisos</p>
+            </a>
+          </li>
+          @endif
+
+          @if(auth()->user()->hasRole('Superadmin') || auth()->user()->can('UsuarioSGD_rol'))
+          <li class="nav-item">
+            <a href="{{ route('accesos.index') }}" class="nav-link {{ activo('accesos.index') }}">
+              <i class="far fa-circle nav-icon text-success"></i>
+              <p>Asignar Roles (Accesos)</p>
+            </a>
+          </li>
+          @endif
+
           <li class="nav-item">
             <a href="{{ url('/administrador/registrousuarios') }}" class="nav-link {{ activo('registrousuarios') }}">
               <i class="far fa-circle nav-icon"></i>
@@ -247,7 +278,8 @@
             </a>
           </li>
         </ul>
-      </li> --}}
+      </li>
+      @endif
       @endcan
 
 

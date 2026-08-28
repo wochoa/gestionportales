@@ -92,7 +92,23 @@
 					 	</thead>
 					 	<tbody>
 					 		@foreach($datos as $dirweb)
-					 		<tr><td>{{ $dirweb->iddirecciones_web }}</td><td>{!! utf8_encode($dirweb->nom_direcciones_web) !!}</td><td>{{ $dirweb->linkdirecciones_web }}</td><td>{{ $dirweb->dns_direcciones_web }}</td><td><button class="btn btn-info btn-xs" data-toggle="modal" data-target="#editar"><i class="fa fa-edit"></i></button></td></tr>
+					 		<tr>
+								<td>{{ $dirweb->iddirecciones_web }}</td>
+								<td>{!! utf8_encode($dirweb->nom_direcciones_web) !!}</td>
+								<td>{{ $dirweb->linkdirecciones_web }}</td>
+								<td>{{ $dirweb->dns_direcciones_web }}</td>
+								<td>
+									<button class="btn btn-info btn-xs btn-edit-page" 
+											data-toggle="modal" 
+											data-target="#editar"
+											data-id="{{ $dirweb->iddirecciones_web }}"
+											data-nombre="{{ utf8_encode($dirweb->nom_direcciones_web) }}"
+											data-ext="{{ $dirweb->linkdirecciones_web }}"
+											data-gore="{{ $dirweb->dns_direcciones_web }}">
+										<i class="fa fa-edit"></i>
+									</button>
+								</td>
+							</tr>
 					 		@endforeach
 					 	</tbody>
 					 </table>
@@ -108,43 +124,52 @@
 	
 </div>
 
-{{-- /// modal --}}
-{{-- <div class="modal fade" id="editar">
+{{-- /// modal de edicion --}}
+<div class="modal fade" id="editar">
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Nuevo permiso</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <div class="modal-header bg-info">
+          <h4 class="modal-title text-white"><i class="fas fa-edit"></i> Editar página web</h4>
+          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form class="form" method="post" action="{{ route('addpermiso') }}">
+        <form class="form" method="post" action="{{ route('registropagina.update') }}">
             @csrf
-            <input type="hidden" name="iddirweb"  value="{{ Auth::user()->iddirecciones_web }}">
+            <input type="hidden" name="id" id="edit-id">
             <div class="card-body">					
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Nombre de permiso</label>
-                    <input type="text" class="form-control" name="nompermiso" placeholder="Ejem. Dashboard" required>
+                    <label for="edit-nombre">Nombre de la dirección</label>
+                    <input type="text" class="form-control form-control-sm" name="nomdireccion" id="edit-nombre" required>
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Nombre de URL</label> <span>poner url si es unico(sino tiene sub menus) de lo contrario en blanco</span>
-                    <input type="text" class="form-control" name="url" placeholder="Ejem. name('xxxx') las xxx se debe colocar">
+                    <label>La direccion esta dentro del dominio de regionhuanuco.gob.pe</label>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="tieneweb2" id="tieneweb2-si" value="SI">
+                      <label class="form-check-label" for="tieneweb2-si">SI</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input class="form-check-input" type="radio" name="tieneweb2" id="tieneweb2-no" value="NO">
+                      <label class="form-check-label" for="tieneweb2-no">NO</label>
+                    </div>
                 </div>
-                <div class="form-group">
-                  <label for="exampleInputEmail1">URl enlace(ref=)</label> 
-                  <input type="text" class="form-control" name="urlrefdir" placeholder="Ejem. /ejemplo/residuos">
-              </div>
-                                        
+                <div class="form-group" style="display: none;" id="dominiogore2">
+                    <label for="edit-dominiogore">Ingrese el nombre del dominio (xxxxx.regionhuanuco.gob.pe)</label>
+                    <input type="text" class="form-control form-control-sm" name="dominiogore" id="edit-dominiogore" placeholder="Ejem. http://consejoregional.regionhuanuco.gob.pe">
+                </div>
+                <div class="form-group" style="display: none;" id="dominioext2">
+                    <label for="edit-dominioext">Ingrese el nombre del dominio propio</label>
+                    <input type="text" class="form-control form-control-sm" name="dominioext" id="edit-dominioext" placeholder="Ejem. http://www.huanucoagrario.gob.pe/">
+                </div>	                 
             </div>
-            <div class="card-footer">
-            <button type="submit" class="btn btn-primary btn-sm float-sm-right"><i class="fa fa-save"></i> Guardar</button>
+            <div class="card-footer text-right">
+				<button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal"><i class="fas fa-times"></i> Cancelar</button>
+				<button type="submit" class="btn btn-info btn-sm"><i class="fa fa-save"></i> Guardar Cambios</button>
             </div>
         </form>
       </div>
       
     </div>
     
-  </div> --}}
+  </div>
 @endsection
 
 @section('script')
@@ -155,8 +180,54 @@
     if (this.value== 'SI') {$('#dominiogore').show();$('#dominioext').hide();}
     else{$('#dominioext').show();$('#dominiogore').hide();}
 	});
+
+	// Toggle inputs para modal de edicion
+	$('input[type=radio][name=tieneweb2]').change(function() {
+		if (this.value == 'SI') {
+			$('#dominiogore2').show();
+			$('#dominioext2').hide();
+			$('#edit-dominioext').val('');
+		} else {
+			$('#dominioext2').show();
+			$('#dominiogore2').hide();
+			$('#edit-dominiogore').val('');
+		}
+	});
+
+	// Rellenar datos en el modal al hacer clic en editar
+	$('.btn-edit-page').click(function() {
+		var id = $(this).data('id');
+		var nombre = $(this).data('nombre');
+		var ext = $(this).data('ext');
+		var gore = $(this).data('gore');
+
+		$('#edit-id').val(id);
+		$('#edit-nombre').val(nombre);
+		$('#edit-dominioext').val(ext);
+		$('#edit-dominiogore').val(gore);
+
+		if (gore) {
+			$('#tieneweb2-si').prop('checked', true);
+			$('#dominiogore2').show();
+			$('#dominioext2').hide();
+		} else {
+			$('#tieneweb2-no').prop('checked', true);
+			$('#dominioext2').show();
+			$('#dominiogore2').hide();
+		}
+	});
+
 	$("ul.pagination").addClass('pagination-sm m-0 float-right');
 
+</script>
+
+<script type="text/javascript">
+    @if(Session::has('success'))
+       toastr.success('{{ Session::get('success') }}')
+    @endif
+    @if(Session::has('error'))
+       toastr.error('{{ Session::get('error') }}')
+    @endif
 </script>
 
 @endsection

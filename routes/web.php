@@ -214,6 +214,7 @@ Route::post('/formeditapublicaciones','Contentgral@formeditapublicaciones')->nam
 // administracion
 Route::get('/administrador/registropagina', 'Contentgral@registropagina')->name('registropagina');
 Route::post('/formregistropagina', 'Contentgral@formregistropagina')->name('formregistropagina');
+Route::post('/administrador/registropagina/update', 'Contentgral@formeditregistropagina')->name('registropagina.update');
 Route::get('/administrador/registrousuarios', 'Contentgral@registrousuarios')->name('registrousuarios');
 
 
@@ -271,6 +272,19 @@ route::get('listado_extrenovisitas/{id}','Externopagina@listado_extrenovisitas')
 
 //Modificado por Abel
 Route::group(['middleware' => ['auth']], function(){
+    // Administracion de roles, permisos y accesos
+    Route::get('/administrador/roles', 'AdministracionController@indexRoles')->name('roles.index');
+    Route::post('/administrador/roles', 'AdministracionController@storeRole')->name('roles.store');
+    Route::post('/administrador/roles/{role}/update', 'AdministracionController@updateRole')->name('roles.update');
+    Route::delete('/administrador/roles/{role}', 'AdministracionController@destroyRole')->name('roles.destroy');
+
+    Route::get('/administrador/permisos', 'AdministracionController@indexPermisos')->name('permisos.index');
+    Route::post('/administrador/permisos', 'AdministracionController@storePermiso')->name('permisos.store');
+    Route::delete('/administrador/permisos/{permission}', 'AdministracionController@destroyPermiso')->name('permisos.destroy');
+
+    Route::get('/administrador/accesos', 'AdministracionController@indexAccesos')->name('accesos.index');
+    Route::post('/administrador/accesos/{user}', 'AdministracionController@updateAcceso')->name('accesos.update');
+
     route::get('visitas-externo','VisitaController@indexExterno')->name('visitas-externo');
     route::get('listarFuncionarios/{dependencia}','VisitaController@listarFuncionarios')->name('listar-funcionarios');
     route::post('listarVisitas','VisitaController@listarVisitas')->name('list-visitas');
