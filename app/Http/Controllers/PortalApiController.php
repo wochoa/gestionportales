@@ -733,23 +733,16 @@ class PortalApiController extends Controller
      */
     public function directorio(Request $request, $dir = '')
     {
-        try {
-            $sgdExists = config('database.connections.sgd');
-            $conn = $sgdExists ? 'sgd' : $this->connection;
-
-            $query = DB::connection($conn)->table('tram_dependencia')
-                ->where('depe_tipo', 1)
-                ->where('depe_estado', 1);
-
-            if (!empty($dir)) {
-                $query->where('depe_nombre', 'ILIKE', '%' . strtoupper($dir) . '%');
-            }
-
-            $directorio = $query->orderBy('iddependencia', 'ASC')->paginate(20);
-            return response()->json(['directorio' => $directorio, 'data' => $directorio->items()], 200, ['Content-Type' => 'application/json;charset=UTF-8'], JSON_UNESCAPED_UNICODE);
-        } catch (Exception $e) {
-            return response()->json(['directorio' => []], 200);
+        if(strlen($dir)!=0){
+            $directorio=DB::connection('pgsqlsgd')->table('tram_dependencia')->where(['depe_tipo'=>1,'depe_estado'=>1])->where('depe_nombre','LIKE','%'.strtoupper($dir).'%')->orderBy('iddependencia','ASC')->paginate(20); 
         }
+        else{
+            $directorio=DB::connection('pgsqlsgd')->table('tram_dependencia')->where(['depe_tipo'=>1,'depe_estado'=>1])->orderBy('iddependencia','ASC')->paginate(20); 
+        }
+       
+        
+        return response()->json(['directorio'=>$directorio],200, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'],JSON_UNESCAPED_UNICODE); 
+        // return view('directorio',compact('directorio'));
     }
 
     public function unidad(Request $request, $cod = null)
